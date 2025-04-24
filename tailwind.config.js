@@ -1,4 +1,3 @@
-
 module.exports = {
   content: ['./*.html', './*.jsx'],
   theme: {
@@ -14,3 +13,4 @@ module.exports = {
   },
   plugins: [],
 };
+
