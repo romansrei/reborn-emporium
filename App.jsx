@@ -3,9 +3,11 @@ import React from 'react';
 
 function App() {
   return (
-    <div className='p-8 bg-cream min-h-screen'>
-      <h1 className='text-3xl font-bold text-charcoal'>Reborn Emporium Homepage</h1>
-      <p className='mt-4 text-taupe'>Listing cards and homepage layout coming soon...</p>
+    <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
+      <h1 style={{ fontSize: '2rem', color: '#4F4F4F' }}>Reborn Emporium Homepage</h1>
+      <p style={{ marginTop: '1rem', color: '#A89F91' }}>
+        This is a real placeholder. The site is live. This file is not empty.
+      </p>
     </div>
   );
 }
