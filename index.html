@@ -226,7 +226,49 @@
 
     </form>
   </div>
-
+  <script>
+    // Wait for DOM to load
+    document.addEventListener("DOMContentLoaded", function() {
+      
+      // Target the form
+      const form = document.querySelector("form");
+      
+      // Target the listings grid
+      const listingsGrid = document.querySelector(".grid");
+    
+      // Handle form submission
+      form.addEventListener("submit", function(event) {
+        event.preventDefault(); // Stop form from refreshing page
+        
+        // Get form values
+        const dollName = document.getElementById("doll-name").value;
+        const artistName = document.getElementById("artist-name").value;
+        const price = document.getElementById("price").value;
+        const status = document.getElementById("status").value;
+        
+        // Create a new listing card
+        const card = document.createElement("div");
+        card.className = "bg-white shadow-md rounded-lg overflow-hidden";
+    
+        card.innerHTML = `
+          <img src="https://via.placeholder.com/300x300" alt="${dollName}" class="w-full h-64 object-cover">
+          <div class="p-4">
+            <h3 class="text-lg font-bold">${dollName}</h3>
+            <p class="text-gray-600">Artist: ${artistName}</p>
+            <p class="text-gray-800 font-semibold mt-2">$${price}</p>
+            <p class="text-green-600 font-semibold mt-1">${status}</p>
+          </div>
+        `;
+    
+        // Insert the new card into the listings grid
+        listingsGrid.appendChild(card);
+    
+        // Reset the form fields
+        form.reset();
+      });
+    });
+    </script>
+    
 
 
 </body>
