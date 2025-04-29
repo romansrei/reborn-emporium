@@ -1,18 +1,95 @@
 <!-- Seller Dashboard Page -->
-<section class="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-12">
-    <div class="w-full max-w-2xl bg-white p-8 rounded-lg shadow">
-      <h1 class="text-3xl font-semibold mb-6 text-center">Welcome, Seller!</h1>
-  
-      <div class="flex justify-center">
-        <a href="create-listing.html" class="px-6 py-3 bg-gray-800 text-white rounded-md hover:bg-gray-700">
-          Create New Doll Listing
-        </a>
-      </div>
-  
-      <div class="mt-8">
-        <h2 class="text-xl font-semibold mb-4">Your Active Listings</h2>
-        <p class="text-gray-600 text-center">You don't have any listings yet.</p>
-      </div>
-    </div>
-  </section>
-  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Seller Dashboard - Reborn Emporium</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f3f4f6;
+      padding: 2rem;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .listings {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .card {
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    }
+    button, .btn {
+      background: #4b5563;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    button:hover, .btn:hover {
+      background: #374151;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h2>Welcome, <span id="sellerName"></span></h2>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <div>
+    <a class="btn" href="create-listing.html">+ Create New Listing</a>
+  </div>
+
+  <h3 style="margin-top:2rem;">Your Listings</h3>
+  <div id="listingContainer" class="listings"></div>
+
+  <script>
+    const currentSeller = JSON.parse(localStorage.getItem("currentSeller"));
+    if (!currentSeller) {
+      alert("Session expired. Please log in again.");
+      window.location.href = "seller-login.html";
+    }
+
+    document.getElementById("sellerName").textContent = currentSeller.nursery || currentSeller.email;
+
+    const listings = JSON.parse(localStorage.getItem("listings") || "[]");
+    const sellerListings = listings.filter(l => l.sellerEmail === currentSeller.email);
+
+    const container = document.getElementById("listingContainer");
+
+    if (sellerListings.length === 0) {
+      container.innerHTML = "<p>You have no listings yet.</p>";
+    } else {
+      sellerListings.forEach(listing => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <strong>${listing.dollName}</strong><br/>
+          ${listing.awakeAsleep} • ${listing.material} • $${listing.price}<br/><br/>
+          <a class="btn" href="edit-listing.html?id=${listing.id}">Edit</a>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function logout() {
+      localStorage.removeItem("currentSeller");
+      window.location.href = "seller-login.html";
+    }
+  </script>
+
+</body>
+</html>

@@ -1,23 +1,82 @@
 <!-- Seller Login Page -->
-<section class="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-12">
-    <div class="w-full max-w-md bg-white p-8 rounded-lg shadow">
-      <h1 class="text-2xl font-semibold mb-6 text-center">Seller Login</h1>
-      
-      <form id="sellerLoginForm" action="seller-dashboard.html">
-        <div class="mb-4">
-          <label for="email" class="block text-sm font-medium mb-1">Email Address*</label>
-          <input type="email" id="email" name="email" required class="w-full border rounded px-3 py-2">
-        </div>
-  
-        <div class="mb-6">
-          <label for="password" class="block text-sm font-medium mb-1">Password*</label>
-          <input type="password" id="password" name="password" required class="w-full border rounded px-3 py-2">
-        </div>
-  
-        <button type="submit" class="w-full bg-gray-800 text-white py-2 rounded hover:bg-gray-700">
-          Login
-        </button>
-      </form>
-    </div>
-  </section>
-  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Reborn Emporium</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .form-container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      width: 100%;
+      max-width: 400px;
+    }
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.25rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      background: #4b5563;
+      color: white;
+      padding: 0.75rem;
+      border: none;
+      width: 100%;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #374151;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Seller Login</h2>
+    <form id="loginForm">
+      <label for="email">Email*</label>
+      <input type="email" id="email" required />
+
+      <label for="password">Password*</label>
+      <input type="password" id="password" required />
+
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      const sellers = JSON.parse(localStorage.getItem("sellers") || "[]");
+
+      const match = sellers.find(s => s.email === email && s.password === password);
+      if (!match) {
+        alert("Invalid email or password.");
+        return;
+      }
+
+      localStorage.setItem("currentSeller", JSON.stringify(match)); // set session
+      window.location.href = "seller-dashboard.html";
+    });
+  </script>
+</body>
+</html>

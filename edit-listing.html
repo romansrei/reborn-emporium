@@ -1,50 +1,129 @@
 <!-- Edit Doll Listing Page -->
-<section class="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-12">
-    <div class="w-full max-w-2xl bg-white p-8 rounded-lg shadow">
-      <h1 class="text-2xl font-semibold mb-6 text-center">Edit Doll Listing</h1>
-  
-      <form id="editListingForm" action="seller-dashboard.html">
-        <div class="mb-4">
-          <label for="dollName" class="block text-sm font-medium mb-1">Doll Name*</label>
-          <input type="text" id="dollName" name="dollName" value="Sample Doll Name" required class="w-full border rounded px-3 py-2">
-        </div>
-  
-        <div class="mb-4">
-          <label class="block text-sm font-medium mb-1">Awake or Asleep*</label>
-          <div class="flex space-x-4 mt-2">
-            <label><input type="radio" name="awakeAsleep" value="awake" checked> Awake</label>
-            <label><input type="radio" name="awakeAsleep" value="asleep"> Asleep</label>
-          </div>
-        </div>
-  
-        <div class="mb-4">
-          <label for="material" class="block text-sm font-medium mb-1">Material*</label>
-          <select id="material" name="material" required class="w-full border rounded px-3 py-2">
-            <option value="vinyl" selected>Vinyl</option>
-            <option value="silicone">Silicone</option>
-          </select>
-        </div>
-  
-        <div class="mb-4">
-          <label for="price" class="block text-sm font-medium mb-1">Price (USD)*</label>
-          <input type="number" id="price" name="price" value="299.00" required class="w-full border rounded px-3 py-2">
-        </div>
-  
-        <div class="mb-6">
-          <label for="photo" class="block text-sm font-medium mb-1">Upload New Photo</label>
-          <input type="file" id="photo" name="photo" accept="image/*" class="w-full">
-        </div>
-  
-        <div class="flex flex-col space-y-4">
-          <button type="submit" class="w-full bg-gray-800 text-white py-2 rounded hover:bg-gray-700">
-            Save Changes
-          </button>
-  
-          <button type="button" class="w-full bg-red-600 text-white py-2 rounded hover:bg-red-500">
-            Delete Listing
-          </button>
-        </div>
-      </form>
-    </div>
-  </section>
-  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Listing - Reborn Emporium</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .form-container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      width: 100%;
+      max-width: 500px;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.25rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    button {
+      background: #4b5563;
+      color: white;
+      padding: 0.75rem;
+      border: none;
+      width: 100%;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #374151;
+    }
+    .delete-btn {
+      background: #dc2626;
+    }
+    .delete-btn:hover {
+      background: #b91c1c;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Edit Listing</h2>
+    <form id="editListingForm">
+      <label for="dollName">Doll Name*</label>
+      <input type="text" id="dollName" required />
+
+      <label>Awake or Asleep*</label><br />
+      <label><input type="radio" name="awakeAsleep" value="awake" required /> Awake</label>
+      <label><input type="radio" name="awakeAsleep" value="asleep" required /> Asleep</label>
+
+      <label for="material">Material*</label>
+      <select id="material" required>
+        <option value="">Select</option>
+        <option value="vinyl">Vinyl</option>
+        <option value="silicone">Silicone</option>
+      </select>
+
+      <label for="price">Price (USD)*</label>
+      <input type="number" id="price" required />
+
+      <div class="actions">
+        <button type="submit">Save Changes</button>
+        <button type="button" class="delete-btn" onclick="deleteListing()">Delete Listing</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const listingId = params.get("id");
+
+    const listings = JSON.parse(localStorage.getItem("listings") || "[]");
+    const listing = listings.find(l => l.id == listingId);
+
+    if (!listing) {
+      alert("Listing not found.");
+      window.location.href = "seller-dashboard.html";
+    }
+
+    // Pre-fill form
+    document.getElementById("dollName").value = listing.dollName;
+    document.querySelector(`input[name="awakeAsleep"][value="${listing.awakeAsleep}"]`).checked = true;
+    document.getElementById("material").value = listing.material;
+    document.getElementById("price").value = listing.price;
+
+    document.getElementById("editListingForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      listing.dollName = document.getElementById("dollName").value.trim();
+      listing.awakeAsleep = document.querySelector('input[name="awakeAsleep"]:checked')?.value;
+      listing.material = document.getElementById("material").value;
+      listing.price = document.getElementById("price").value;
+
+      const updatedListings = listings.map(l => l.id == listingId ? listing : l);
+      localStorage.setItem("listings", JSON.stringify(updatedListings));
+
+      window.location.href = "seller-dashboard.html";
+    });
+
+    function deleteListing() {
+      if (confirm("Are you sure you want to delete this listing?")) {
+        const updatedListings = listings.filter(l => l.id != listingId);
+        localStorage.setItem("listings", JSON.stringify(updatedListings));
+        window.location.href = "seller-dashboard.html";
+      }
+    }
+  </script>
+
+</body>
+</html>
