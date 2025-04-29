@@ -1,0 +1,50 @@
+<!-- Edit Doll Listing Page -->
+<section class="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-12">
+    <div class="w-full max-w-2xl bg-white p-8 rounded-lg shadow">
+      <h1 class="text-2xl font-semibold mb-6 text-center">Edit Doll Listing</h1>
+  
+      <form id="editListingForm" action="seller-dashboard.html">
+        <div class="mb-4">
+          <label for="dollName" class="block text-sm font-medium mb-1">Doll Name*</label>
+          <input type="text" id="dollName" name="dollName" value="Sample Doll Name" required class="w-full border rounded px-3 py-2">
+        </div>
+  
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-1">Awake or Asleep*</label>
+          <div class="flex space-x-4 mt-2">
+            <label><input type="radio" name="awakeAsleep" value="awake" checked> Awake</label>
+            <label><input type="radio" name="awakeAsleep" value="asleep"> Asleep</label>
+          </div>
+        </div>
+  
+        <div class="mb-4">
+          <label for="material" class="block text-sm font-medium mb-1">Material*</label>
+          <select id="material" name="material" required class="w-full border rounded px-3 py-2">
+            <option value="vinyl" selected>Vinyl</option>
+            <option value="silicone">Silicone</option>
+          </select>
+        </div>
+  
+        <div class="mb-4">
+          <label for="price" class="block text-sm font-medium mb-1">Price (USD)*</label>
+          <input type="number" id="price" name="price" value="299.00" required class="w-full border rounded px-3 py-2">
+        </div>
+  
+        <div class="mb-6">
+          <label for="photo" class="block text-sm font-medium mb-1">Upload New Photo</label>
+          <input type="file" id="photo" name="photo" accept="image/*" class="w-full">
+        </div>
+  
+        <div class="flex flex-col space-y-4">
+          <button type="submit" class="w-full bg-gray-800 text-white py-2 rounded hover:bg-gray-700">
+            Save Changes
+          </button>
+  
+          <button type="button" class="w-full bg-red-600 text-white py-2 rounded hover:bg-red-500">
+            Delete Listing
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+  
