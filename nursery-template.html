@@ -141,23 +141,7 @@
       <h2>Doll Name 3</h2>
       <p>$390 – Ready to ship</p>
       <button onclick="fakeInquiry('Doll Name 3')">Inquire</button>
-      <button onclick="saveWishlist('Doll Name 3')">Save to Wishlist</button>
-    </section>
-    
-    <script>
-      // Inquiries Logic
-      const inquiryList = document.getElementById("inquiryList");
-      const inquiries = JSON.parse(localStorage.getItem("inquiries") || "[]");
-    
-      if (inquiries.length === 0) {
-        inquiryList.innerHTML = "<li style='color:#777'>You haven't sent any inquiries yet.</li>";
-      } else {
-        inquiries.forEach(item => {
-          const li = document.createElement("li");
-          li.innerHTML = `<strong>${item.doll}</strong>: ${item.message}`;
-          inquiryList.appendChild(li);
-        });
-      }
+     
     </script>
     
     <script>
