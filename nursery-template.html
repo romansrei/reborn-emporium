@@ -160,7 +160,13 @@
     </section>
     <script>
       function fakeInquiry(dollName) {
-        alert(`You clicked to inquire about ${dollName}.\n\nThis feature is coming soon.`);
+        const message = prompt(`Send a message about ${dollName}:\n(Example: Is this doll still available?)`);
+        if (message && message.trim() !== "") {
+          const inquiries = JSON.parse(localStorage.getItem("inquiries") || "[]");
+          inquiries.push({ doll: dollName, message });
+          localStorage.setItem("inquiries", JSON.stringify(inquiries));
+          alert("Your message has been saved (placeholder).");
+        }
       }
     
       function saveWishlist(dollName) {
@@ -175,6 +181,7 @@
         }
       }
     </script>
+    
     
     
    
