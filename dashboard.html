@@ -121,7 +121,8 @@
 
     <div class="section">
       <h2>Wishlist</h2>
-      <div class="placeholder">Your wishlist is currently empty.</div>
+      <ul id="wishlist"></ul>
+
     </div>
 
     <div class="section">
@@ -133,5 +134,24 @@
   <footer>
     &copy; 2025 Reborn Emporium. All rights reserved.
   </footer>
+  <script>
+    window.onload = function () {
+      const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+      const list = document.getElementById("wishlist");
+  
+      if (!list) return;
+  
+      if (wishlist.length === 0) {
+        list.innerHTML = "<li style='color:#777'>Your wishlist is currently empty.</li>";
+      } else {
+        wishlist.forEach(name => {
+          const li = document.createElement("li");
+          li.textContent = name;
+          list.appendChild(li);
+        });
+      }
+    };
+  </script>
+  
 </body>
 </html>
