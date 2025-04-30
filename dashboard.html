@@ -139,19 +139,36 @@
       const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
       const list = document.getElementById("wishlist");
   
-      if (!list) return;
+      function updateDisplay() {
+        list.innerHTML = "";
   
-      if (wishlist.length === 0) {
-        list.innerHTML = "<li style='color:#777'>Your wishlist is currently empty.</li>";
-      } else {
-        wishlist.forEach(name => {
+        if (wishlist.length === 0) {
+          list.innerHTML = "<li style='color:#777'>Your wishlist is currently empty.</li>";
+          return;
+        }
+  
+        wishlist.forEach((name, index) => {
           const li = document.createElement("li");
-          li.textContent = name;
+          li.textContent = name + " ";
+  
+          const removeBtn = document.createElement("button");
+          removeBtn.textContent = "❌";
+          removeBtn.style.marginLeft = "8px";
+          removeBtn.onclick = function () {
+            wishlist.splice(index, 1);
+            localStorage.setItem("wishlist", JSON.stringify(wishlist));
+            updateDisplay();
+          };
+  
+          li.appendChild(removeBtn);
           list.appendChild(li);
         });
       }
+  
+      updateDisplay();
     };
   </script>
+  
   
 </body>
 </html>
