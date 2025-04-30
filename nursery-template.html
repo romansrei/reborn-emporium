@@ -134,27 +134,56 @@
       <p>
         Welcome to Sweet Pea Reborns. Each doll is handcrafted with care and realism in mind. I specialize in lifelike skin tones, rooted hair, and fine details that bring each baby to life.
       </p>
-     
-      
-          
-      
-          updateDisplay();
-      
-          // Inquiries Logic
-          const inquiryList = document.getElementById("inquiryList");
+    
+      <ul id="inquiryList"></ul>
+    
+      <img src="https://via.placeholder.com/240x320.png?text=Doll+3" alt="Doll 3">
+      <h2>Doll Name 3</h2>
+      <p>$390 – Ready to ship</p>
+      <button onclick="fakeInquiry('Doll Name 3')">Inquire</button>
+      <button onclick="saveWishlist('Doll Name 3')">Save to Wishlist</button>
+    </section>
+    
+    <script>
+      // Inquiries Logic
+      const inquiryList = document.getElementById("inquiryList");
+      const inquiries = JSON.parse(localStorage.getItem("inquiries") || "[]");
+    
+      if (inquiries.length === 0) {
+        inquiryList.innerHTML = "<li style='color:#777'>You haven't sent any inquiries yet.</li>";
+      } else {
+        inquiries.forEach(item => {
+          const li = document.createElement("li");
+          li.innerHTML = `<strong>${item.doll}</strong>: ${item.message}`;
+          inquiryList.appendChild(li);
+        });
+      }
+    </script>
+    
+    <script>
+      function fakeInquiry(dollName) {
+        const message = prompt(`Send a message about ${dollName}:\n(Example: Is this doll still available?)`);
+        if (message && message.trim() !== "") {
           const inquiries = JSON.parse(localStorage.getItem("inquiries") || "[]");
-      
-          if (inquiries.length === 0) {
-            inquiryList.innerHTML = "<li style='color:#777'>You haven't sent any inquiries yet.</li>";
-          } else {
-            inquiries.forEach(item => {
-              const li = document.createElement("li");
-              li.innerHTML = `<strong>${item.doll}</strong>: ${item.message}`;
-              inquiryList.appendChild(li);
-            });
-          }
-        };
-      </script>
+          inquiries.push({ doll: dollName, message });
+          localStorage.setItem("inquiries", JSON.stringify(inquiries));
+          alert("Your message has been saved (placeholder).");
+        }
+      }
+    
+      function saveWishlist(dollName) {
+        let wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+    
+        if (!wishlist.includes(dollName)) {
+          wishlist.push(dollName);
+          localStorage.setItem("wishlist", JSON.stringify(wishlist));
+          alert(`${dollName} has been added to your wishlist.`);
+        } else {
+          alert(`${dollName} is already in your wishlist.`);
+        }
+      }
+    </script>
+    
       
         <img src="https://via.placeholder.com/240x320.png?text=Doll+3" alt="Doll 3">
         <h2>Doll Name 3</h2>
