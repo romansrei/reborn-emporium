@@ -1,0 +1,82 @@
+<!-- Seller Nursery Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nursery - Reborn Emporium</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f3f4f6;
+      padding: 2rem;
+    }
+    h2 {
+      margin-bottom: 1.5rem;
+    }
+    .section {
+      margin-bottom: 2.5rem;
+    }
+    .listings {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Nursery: <span id="sellerDisplayName"></span></h2>
+
+  <div class="section">
+    <h3>Available Dolls</h3>
+    <div id="activeListings" class="listings"></div>
+  </div>
+
+  <div class="section">
+    <h3>Previously Sold Dolls</h3>
+    <div id="soldListings" class="listings"></div>
+  </div>
+
+  <script>
+    // SET THIS TO THE SELLER'S EMAIL TO FILTER THEIR LISTINGS
+    const sellerEmail = "test@example.com"; // <<< CHANGE THIS FOR EACH SELLER
+    const sellerName = "Your Nursery Name"; // <<< CHANGE THIS FOR DISPLAY
+
+    document.getElementById("sellerDisplayName").textContent = sellerName;
+
+    const listings = JSON.parse(localStorage.getItem("listings") || "[]");
+    const sellerListings = listings.filter(l => l.sellerEmail === sellerEmail);
+
+    const activeListings = sellerListings.filter(l => !l.sold);
+    const soldListings = sellerListings.filter(l => l.sold);
+
+    const renderListings = (targetEl, listings) => {
+      if (listings.length === 0) {
+        targetEl.innerHTML = "<p>No listings to show.</p>";
+        return;
+      }
+
+      listings.forEach(l => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <strong>${l.dollName}</strong><br/>
+          ${l.awakeAsleep} • ${l.material} • $${l.price}
+        `;
+        targetEl.appendChild(card);
+      });
+    };
+
+    renderListings(document.getElementById("activeListings"), activeListings);
+    renderListings(document.getElementById("soldListings"), soldListings);
+  </script>
+
+</body>
+</html>

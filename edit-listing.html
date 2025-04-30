@@ -77,6 +77,8 @@
       <label for="price">Price (USD)*</label>
       <input type="number" id="price" required />
 
+      <label><input type="checkbox" id="soldToggle" /> Mark as Sold</label>
+
       <div class="actions">
         <button type="submit">Save Changes</button>
         <button type="button" class="delete-btn" onclick="deleteListing()">Delete Listing</button>
@@ -101,6 +103,7 @@
     document.querySelector(`input[name="awakeAsleep"][value="${listing.awakeAsleep}"]`).checked = true;
     document.getElementById("material").value = listing.material;
     document.getElementById("price").value = listing.price;
+    document.getElementById("soldToggle").checked = !!listing.sold;
 
     document.getElementById("editListingForm").addEventListener("submit", function (e) {
       e.preventDefault();
@@ -109,6 +112,7 @@
       listing.awakeAsleep = document.querySelector('input[name="awakeAsleep"]:checked')?.value;
       listing.material = document.getElementById("material").value;
       listing.price = document.getElementById("price").value;
+      listing.sold = document.getElementById("soldToggle").checked;
 
       const updatedListings = listings.map(l => l.id == listingId ? listing : l);
       localStorage.setItem("listings", JSON.stringify(updatedListings));
