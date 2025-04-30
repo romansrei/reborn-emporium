@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nursery Directory – Reborn Emporium</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+    }
+    header {
+      background-color: #ffffff;
+      border-bottom: 1px solid #ddd;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #444;
+    }
+    nav a {
+      margin-left: 1.5rem;
+      text-decoration: none;
+      color: #555;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a:hover {
+      color: #000;
+    }
+
+    main {
+      padding: 3rem 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      font-weight: 600;
+    }
+
+    .nursery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .nursery-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      text-align: center;
+    }
+
+    .nursery-card h2 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .nursery-card p {
+      font-size: 0.95rem;
+      color: #666;
+      margin-bottom: 1rem;
+    }
+
+    .nursery-card a {
+      text-decoration: none;
+      color: #007b83;
+      font-weight: 500;
+    }
+
+    footer {
+      margin-top: 4rem;
+      padding: 2rem;
+      text-align: center;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Reborn Emporium</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/register.html">Register</a>
+      <a href="/login.html">Login</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/nurseries.html">Nursery Directory</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Browse Nurseries</h1>
+    <div class="nursery-grid">
+      <div class="nursery-card">
+        <h2>Sweet Pea Reborns</h2>
+        <p>Texas, USA</p>
+        <a href="#">View Nursery →</a>
+      </div>
+      <div class="nursery-card">
+        <h2>Tiny Blessings Studio</h2>
+        <p>Ontario, Canada</p>
+        <a href="#">View Nursery →</a>
+      </div>
+      <div class="nursery-card">
+        <h2>Little Dreamers</h2>
+        <p>UK</p>
+        <a href="#">View Nursery →</a>
+      </div>
+      <div class="nursery-card">
+        <h2>Angelic Touch Dolls</h2>
+        <p>Florida, USA</p>
+        <a href="#">View Nursery →</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Reborn Emporium. All rights reserved.
+  </footer>
+</body>
+</html>
