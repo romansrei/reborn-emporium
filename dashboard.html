@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Dashboard – Reborn Emporium</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #ffffff;
+      border-bottom: 1px solid #ddd;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #444;
+    }
+
+    nav a {
+      margin-left: 1.5rem;
+      text-decoration: none;
+      color: #555;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: #000;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 3rem auto;
+      background: #ffffff;
+      padding: 2rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .user-info {
+      margin-bottom: 2rem;
+      background: #f1f1f1;
+      padding: 1rem;
+      border-radius: 6px;
+    }
+
+    .section {
+      margin-bottom: 2rem;
+    }
+
+    .section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .placeholder {
+      background: #f9f9f9;
+      padding: 1rem;
+      border: 1px dashed #ccc;
+      border-radius: 6px;
+      color: #777;
+      text-align: center;
+    }
+
+    footer {
+      margin-top: 4rem;
+      padding: 2rem;
+      text-align: center;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Reborn Emporium</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/register.html">Register</a>
+      <a href="/login.html">Login</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/nurseries.html">Nursery Directory</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Welcome, [Full Name]</h1>
+
+    <div class="user-info">
+      <p><strong>Email:</strong> user@example.com</p>
+      <p><a href="/login.html">Log out</a></p>
+    </div>
+
+    <div class="section">
+      <h2>Saved Nurseries</h2>
+      <div class="placeholder">You haven't saved any nurseries yet.</div>
+    </div>
+
+    <div class="section">
+      <h2>Wishlist</h2>
+      <div class="placeholder">Your wishlist is currently empty.</div>
+    </div>
+
+    <div class="section">
+      <h2>Messages & Inquiries</h2>
+      <div class="placeholder">No messages yet. When you contact a nursery, replies will appear here.</div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Reborn Emporium. All rights reserved.
+  </footer>
+</body>
+</html>
