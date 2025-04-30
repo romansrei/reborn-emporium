@@ -140,17 +140,35 @@
         <img src="https://via.placeholder.com/240x320.png?text=Doll+1" alt="Doll 1">
         <h2>Doll Name 1</h2>
         <p>$450 – Ready to ship</p>
+        <button onclick="fakeInquiry('Doll Name 1')">Inquire</button>
+        <button onclick="saveWishlist('Doll Name 1')">♡ Save to Wishlist</button>
       </div>
       <div class="doll-card">
         <img src="https://via.placeholder.com/240x320.png?text=Doll+2" alt="Doll 2">
         <h2>Doll Name 2</h2>
         <p>$525 – Custom Order</p>
+        <button onclick="fakeInquiry('Doll Name 2')">Inquire</button>
+        <button onclick="saveWishlist('Doll Name 2')">♡ Save to Wishlist</button>
       </div>
       <div class="doll-card">
         <img src="https://via.placeholder.com/240x320.png?text=Doll+3" alt="Doll 3">
         <h2>Doll Name 3</h2>
         <p>$390 – Ready to ship</p>
+        <button onclick="fakeInquiry('Doll Name 3')">Inquire</button>
+        <button onclick="saveWishlist('Doll Name 3')">♡ Save to Wishlist</button>
       </div>
+    </section>
+    
+    <script>
+      function fakeInquiry(dollName) {
+        alert(`You clicked to inquire about ${dollName}.\n\nThis feature is coming soon.`);
+      }
+    
+      function saveWishlist(dollName) {
+        alert(`${dollName} has been added to your wishlist.\n\n(This is a placeholder — no data is saved yet.)`);
+      }
+    </script>
+     
     </section>
   </main>
 
