@@ -185,20 +185,7 @@
   <footer>
     &copy; 2025 Reborn Emporium. All rights reserved.
   </footer>
-  <script>
-    const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
-    const list = document.getElementById("wishlist");
   
-    if (wishlist.length === 0) {
-      list.innerHTML = "<li style='color:#777'>Your wishlist is currently empty.</li>";
-    } else {
-      wishlist.forEach(name => {
-        const li = document.createElement("li");
-        li.textContent = name;
-        list.appendChild(li);
-      });
-    }
-  </script>
   
 </body>
 </html>
