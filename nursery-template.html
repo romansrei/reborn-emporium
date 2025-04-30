@@ -127,30 +127,62 @@
       <h1>Sweet Pea Reborns</h1>
       <p>Based in Texas, USA</p>
     </div>
+    <ul id="inquiryList"></ul>
 
     <section class="about">
       <h2>About the Artist</h2>
       <p>
         Welcome to Sweet Pea Reborns. Each doll is handcrafted with care and realism in mind. I specialize in lifelike skin tones, rooted hair, and fine details that bring each baby to life.
       </p>
-    </section>
-
-    <section class="doll-grid">
-      <div class="doll-card">
-        <img src="https://via.placeholder.com/240x320.png?text=Doll+1" alt="Doll 1">
-        <h2>Doll Name 1</h2>
-        <p>$450 – Ready to ship</p>
-        <button onclick="fakeInquiry('Doll Name 1')">Inquire</button>
-        <button onclick="saveWishlist('Doll Name 1')">♡ Save to Wishlist</button>
-      </div>
-      <div class="doll-card">
-        <img src="https://via.placeholder.com/240x320.png?text=Doll+2" alt="Doll 2">
-        <h2>Doll Name 2</h2>
-        <p>$525 – Custom Order</p>
-        <button onclick="fakeInquiry('Doll Name 2')">Inquire</button>
-        <button onclick="saveWishlist('Doll Name 2')">♡ Save to Wishlist</button>
-      </div>
-      <div class="doll-card">
+      <script>
+        window.onload = function () {
+          // Wishlist Logic
+          const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+          const list = document.getElementById("wishlist");
+      
+          function updateDisplay() {
+            list.innerHTML = "";
+            if (wishlist.length === 0) {
+              list.innerHTML = "<li style='color:#777'>Your wishlist is currently empty.</li>";
+              return;
+            }
+      
+            wishlist.forEach((name, index) => {
+              const li = document.createElement("li");
+              li.textContent = name + " ";
+      
+              const removeBtn = document.createElement("button");
+              removeBtn.textContent = "❌";
+              removeBtn.style.marginLeft = "8px";
+              removeBtn.onclick = function () {
+                wishlist.splice(index, 1);
+                localStorage.setItem("wishlist", JSON.stringify(wishlist));
+                updateDisplay();
+              };
+      
+              li.appendChild(removeBtn);
+              list.appendChild(li);
+            });
+          }
+      
+          updateDisplay();
+      
+          // Inquiries Logic
+          const inquiryList = document.getElementById("inquiryList");
+          const inquiries = JSON.parse(localStorage.getItem("inquiries") || "[]");
+      
+          if (inquiries.length === 0) {
+            inquiryList.innerHTML = "<li style='color:#777'>You haven't sent any inquiries yet.</li>";
+          } else {
+            inquiries.forEach(item => {
+              const li = document.createElement("li");
+              li.innerHTML = `<strong>${item.doll}</strong>: ${item.message}`;
+              inquiryList.appendChild(li);
+            });
+          }
+        };
+      </script>
+      
         <img src="https://via.placeholder.com/240x320.png?text=Doll+3" alt="Doll 3">
         <h2>Doll Name 3</h2>
         <p>$390 – Ready to ship</p>
