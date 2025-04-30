@@ -134,36 +134,9 @@
       <p>
         Welcome to Sweet Pea Reborns. Each doll is handcrafted with care and realism in mind. I specialize in lifelike skin tones, rooted hair, and fine details that bring each baby to life.
       </p>
-      <script>
-        window.onload = function () {
-          // Wishlist Logic
-          const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
-          const list = document.getElementById("wishlist");
+     
       
-          function updateDisplay() {
-            list.innerHTML = "";
-            if (wishlist.length === 0) {
-              list.innerHTML = "<li style='color:#777'>Your wishlist is currently empty.</li>";
-              return;
-            }
-      
-            wishlist.forEach((name, index) => {
-              const li = document.createElement("li");
-              li.textContent = name + " ";
-      
-              const removeBtn = document.createElement("button");
-              removeBtn.textContent = "❌";
-              removeBtn.style.marginLeft = "8px";
-              removeBtn.onclick = function () {
-                wishlist.splice(index, 1);
-                localStorage.setItem("wishlist", JSON.stringify(wishlist));
-                updateDisplay();
-              };
-      
-              li.appendChild(removeBtn);
-              list.appendChild(li);
-            });
-          }
+          
       
           updateDisplay();
       
@@ -210,7 +183,7 @@
           alert(`${dollName} has been added to your wishlist.`);
         } else {
           alert(`${dollName} is already in your wishlist.`);
-        }
+        
       }
     </script>
     
