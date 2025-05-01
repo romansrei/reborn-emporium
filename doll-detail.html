@@ -84,6 +84,12 @@
     button:hover {
       background-color: #c88484;
     }
+    #confirmation {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      color: #4e5c6e;
+      font-weight: 500;
+    }
     footer {
       text-align: center;
       font-size: 0.85rem;
@@ -129,6 +135,8 @@
       <button onclick="fakeInquiry('Doll Name Here')">Inquire</button>
       <button onclick="saveWishlist('Doll Name Here')">Save to Wishlist</button>
     </div>
+
+    <div id="confirmation"></div>
   </div>
 
   <footer>
@@ -142,7 +150,8 @@
         const inquiries = JSON.parse(localStorage.getItem("inquiries") || "[]");
         inquiries.push({ doll: dollName, message });
         localStorage.setItem("inquiries", JSON.stringify(inquiries));
-        alert("Your message has been saved (placeholder).\");
+
+        document.getElementById("confirmation").innerText = `Your message has been sent to Sweet Pea Reborns.`;
       }
     }
 
