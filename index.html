@@ -40,6 +40,18 @@
       color: #4e5c6e;
       text-align: center;
     }
+    .search-bar {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    .search-bar input {
+      padding: 0.6rem 1rem;
+      width: 80%;
+      max-width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -100,8 +112,15 @@
 
   <div class="section">
     <h1>Just Listed</h1>
+
+    <!-- 🟢 START: Search Bar -->
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search dolls or nurseries..." onkeyup="filterCards()">
+    </div>
+    <!-- 🔴 END: Search Bar -->
+
     <!-- 🟢 START: Homepage Doll Grid -->
-    <div class="grid">
+    <div class="grid" id="dollGrid">
       <div class="card">
         <img src="https://via.placeholder.com/200x260.png?text=Doll+1" alt="Doll 1">
         <h2>Doll Name 1</h2>
@@ -132,5 +151,18 @@
   <footer>
     &copy; 2025 Reborn Emporium. All rights reserved.
   </footer>
+
+  <script>
+    function filterCards() {
+      const input = document.getElementById('searchInput');
+      const filter = input.value.toLowerCase();
+      const cards = document.querySelectorAll('.card');
+
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(filter) ? 'block' : 'none';
+      });
+    }
+  </script>
 </body>
 </html>
