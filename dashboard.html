@@ -127,7 +127,7 @@
 
     <div class="section">
       <h2>Messages & Inquiries</h2>
-      <div class="placeholder">No messages yet. When you contact a nursery, replies will appear here.</div>
+      <ul id="inquiryList"></ul>
     </div>
   </main>
 
@@ -136,14 +136,15 @@
   </footer>
   <script>
     window.onload = function () {
+      // Wishlist Display
       const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
-      const list = document.getElementById("wishlist");
+      const wishlistList = document.getElementById("wishlist");
   
-      function updateDisplay() {
-        list.innerHTML = "";
+      function updateWishlistDisplay() {
+        wishlistList.innerHTML = "";
   
         if (wishlist.length === 0) {
-          list.innerHTML = "<li style='color:#777'>Your wishlist is currently empty.</li>";
+          wishlistList.innerHTML = "<li style='color:#777'>Your wishlist is currently empty.</li>";
           return;
         }
   
@@ -157,17 +158,32 @@
           removeBtn.onclick = function () {
             wishlist.splice(index, 1);
             localStorage.setItem("wishlist", JSON.stringify(wishlist));
-            updateDisplay();
+            updateWishlistDisplay();
           };
   
           li.appendChild(removeBtn);
-          list.appendChild(li);
+          wishlistList.appendChild(li);
         });
       }
   
-      updateDisplay();
+      updateWishlistDisplay();
+  
+      // Inquiry Display
+      const inquiryList = document.getElementById("inquiryList");
+      const inquiries = JSON.parse(localStorage.getItem("inquiries") || "[]");
+  
+      if (inquiries.length === 0) {
+        inquiryList.innerHTML = "<li style='color:#777'>You haven't sent any inquiries yet.</li>";
+      } else {
+        inquiries.forEach(item => {
+          const li = document.createElement("li");
+          li.innerHTML = `<strong>${item.doll}</strong>: ${item.message}`;
+          inquiryList.appendChild(li);
+        });
+      }
     };
   </script>
+  
   
   
 </body>
