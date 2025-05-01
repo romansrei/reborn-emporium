@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doll Detail – Reborn Emporium</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f5f3ef;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    header, footer {
+      background-color: #ffffff;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #ddd;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #4e5c6e;
+    }
+    nav a {
+      margin-left: 1.5rem;
+      text-decoration: none;
+      color: #555;
+      font-weight: 500;
+    }
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    .doll-image {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .doll-image img {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 12px;
+    }
+    h1 {
+      font-size: 1.75rem;
+      color: #4e5c6e;
+      margin-bottom: 0.5rem;
+    }
+    .price {
+      font-size: 1.25rem;
+      color: #9caaa0;
+      margin-bottom: 1rem;
+    }
+    .details {
+      margin-bottom: 2rem;
+    }
+    .details p {
+      margin: 0.3rem 0;
+    }
+    .description {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      color: #555;
+    }
+    .buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      font-size: 0.95rem;
+      background-color: #d89c9c;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #c88484;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #aaa;
+      margin-top: 4rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Reborn Emporium</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/register.html">Register</a>
+      <a href="/login.html">Login</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/nurseries.html">Nursery Directory</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="doll-image">
+      <img src="https://via.placeholder.com/300x400.png?text=Doll+Photo" alt="Doll Name">
+    </div>
+    <h1>Doll Name Here</h1>
+    <div class="price">$375 + S&H</div>
+
+    <div class="details">
+      <p><strong>Status:</strong> Available</p>
+      <p><strong>Awake/Asleep:</strong> Asleep</p>
+      <p><strong>Material:</strong> Vinyl</p>
+      <p><strong>Size:</strong> 20"</p>
+      <p><strong>Sculpt:</strong> Levi by Bonnie Brown</p>
+      <p><strong>COA:</strong> Included</p>
+      <p><strong>Nursery:</strong> <a href="nursery-template.html">Sweet Pea Reborns</a></p>
+    </div>
+
+    <div class="description">
+      <p>This precious baby has been lovingly hand-painted with multiple layers of Genesis Heat Set Paints and sealed for durability. Features include rooted mohair, magnetic pacifier, and weighted body for realism.</p>
+    </div>
+
+    <div class="buttons">
+      <button onclick="fakeInquiry('Doll Name Here')">Inquire</button>
+      <button onclick="saveWishlist('Doll Name Here')">Save to Wishlist</button>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Reborn Emporium. All rights reserved.
+  </footer>
+
+  <script>
+    function fakeInquiry(dollName) {
+      const message = prompt(`Send a message about ${dollName}:`);
+      if (message && message.trim() !== "") {
+        const inquiries = JSON.parse(localStorage.getItem("inquiries") || "[]");
+        inquiries.push({ doll: dollName, message });
+        localStorage.setItem("inquiries", JSON.stringify(inquiries));
+        alert("Your message has been saved (placeholder).\");
+      }
+    }
+
+    function saveWishlist(dollName) {
+      let wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+      if (!wishlist.includes(dollName)) {
+        wishlist.push(dollName);
+        localStorage.setItem("wishlist", JSON.stringify(wishlist));
+        alert(`${dollName} has been added to your wishlist.`);
+      } else {
+        alert(`${dollName} is already in your wishlist.`);
+      }
+    }
+  </script>
+</body>
+</html>
