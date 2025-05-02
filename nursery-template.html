@@ -1,3 +1,4 @@
+<!-- This is nursery-template.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,28 +41,23 @@
     nav a:hover {
       color: #000;
     }
-
     main {
       padding: 3rem 2rem;
       max-width: 1000px;
       margin: 0 auto;
     }
-
     .nursery-header {
       margin-bottom: 2rem;
     }
-
     .nursery-header h1 {
       font-size: 2rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
     }
-
     .nursery-header p {
       font-size: 1rem;
       color: #666;
     }
-
     .about {
       background-color: #ffffff;
       border: 1px solid #ddd;
@@ -69,13 +65,6 @@
       padding: 1rem 1.5rem;
       margin-bottom: 2rem;
     }
-
-    .doll-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.5rem;
-    }
-
     .doll-card {
       background: #fff;
       border: 1px solid #ddd;
@@ -84,23 +73,43 @@
       text-align: center;
       box-shadow: 0 1px 2px rgba(0,0,0,0.04);
     }
-
     .doll-card img {
       max-width: 100%;
       border-radius: 6px;
       margin-bottom: 0.75rem;
     }
-
     .doll-card h2 {
       font-size: 1rem;
       margin-bottom: 0.3rem;
     }
-
     .doll-card p {
       font-size: 0.9rem;
       color: #666;
     }
-
+    .doll-card a {
+      display: inline-block;
+      margin: 0.5rem 0;
+      font-size: 0.9rem;
+      color: #007b83;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .doll-card a:hover {
+      text-decoration: underline;
+    }
+    .doll-card button {
+      margin: 0.3rem;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.9rem;
+      background-color: #d89c9c;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .doll-card button:hover {
+      background-color: #c88484;
+    }
     footer {
       margin-top: 4rem;
       padding: 2rem;
@@ -127,92 +136,64 @@
       <h1>Sweet Pea Reborns</h1>
       <p>Based in Texas, USA</p>
     </div>
-    <ul id="inquiryList"></ul>
 
     <section class="about">
       <h2>About the Artist</h2>
-      <p>
-        Welcome to Sweet Pea Reborns. Each doll is handcrafted with care and realism in mind. I specialize in lifelike skin tones, rooted hair, and fine details that bring each baby to life.
-      </p>
-    
-      <ul id="inquiryList"></ul>
-    
+      <p>Welcome to Sweet Pea Reborns. Each doll is handcrafted with care and realism in mind. I specialize in lifelike skin tones, rooted hair, and fine details that bring each baby to life.</p>
+    </section>
+
+    <ul id="inquiryList"></ul>
+
+    <!-- 🟢 START: Doll Listing Card -->
+    <div class="doll-card">
       <img src="https://via.placeholder.com/240x320.png?text=Doll+3" alt="Doll 3">
       <h2>Doll Name 3</h2>
       <p>$390 – Ready to ship</p>
+      <a href="doll-detail.html">View Details →</a>
       <button onclick="fakeInquiry('Doll Name 3')">Inquire</button>
-     
-    </script>
-    
-    <script>
-      function fakeInquiry(dollName) {
-        const message = prompt(`Send a message about ${dollName}:\n(Example: Is this doll still available?)`);
-        if (message && message.trim() !== "") {
-          const inquiries = JSON.parse(localStorage.getItem("inquiries") || "[]");
-          inquiries.push({ doll: dollName, message });
-          localStorage.setItem("inquiries", JSON.stringify(inquiries));
-          alert("Your message has been saved (placeholder).");
-        }
-      }
-    
-      function saveWishlist(dollName) {
-        let wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
-    
-        if (!wishlist.includes(dollName)) {
-          wishlist.push(dollName);
-          localStorage.setItem("wishlist", JSON.stringify(wishlist));
-          alert(`${dollName} has been added to your wishlist.`);
-        } else {
-          alert(`${dollName} is already in your wishlist.`);
-        }
-      }
-    </script>
-    
-      
-        <img src="https://via.placeholder.com/240x320.png?text=Doll+3" alt="Doll 3">
-        <h2>Doll Name 3</h2>
-        <p>$390 – Ready to ship</p>
-        <a href="doll-detail.html">View Details</a>
-
-        <button onclick="fakeInquiry('Doll Name 3')">Inquire</button>
-        <button onclick="saveWishlist('Doll Name 3')">♡ Save to Wishlist</button>
-      </div>
-    </section>
-    <script>
-      function fakeInquiry(dollName) {
-        const message = prompt(`Send a message about ${dollName}:\n(Example: Is this doll still available?)`);
-        if (message && message.trim() !== "") {
-          const inquiries = JSON.parse(localStorage.getItem("inquiries") || "[]");
-          inquiries.push({ doll: dollName, message });
-          localStorage.setItem("inquiries", JSON.stringify(inquiries));
-          alert("Your message has been saved (placeholder).");
-        }
-      }
-    
-      function saveWishlist(dollName) {
-        let wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
-    
-        if (!wishlist.includes(dollName)) {
-          wishlist.push(dollName);
-          localStorage.setItem("wishlist", JSON.stringify(wishlist));
-          alert(`${dollName} has been added to your wishlist.`);
-        } else {
-          alert(`${dollName} is already in your wishlist.`);
-        
-      }
-    </script>
-    
-    
-    
-   
-     
-    </section>
+      <button onclick="saveWishlist('Doll Name 3')">♡ Save to Wishlist</button>
+    </div>
+    <!-- 🔴 END: Doll Listing Card -->
   </main>
 
   <footer>
     &copy; 2025 Reborn Emporium. All rights reserved.
   </footer>
-  
-  
+
+  <script>
+    // Inquiries Logic
+    const inquiryList = document.getElementById("inquiryList");
+    const inquiries = JSON.parse(localStorage.getItem("inquiries") || "[]");
+    if (inquiries.length === 0) {
+      inquiryList.innerHTML = "<li style='color:#777'>You haven't sent any inquiries yet.</li>";
+    } else {
+      inquiries.forEach(item => {
+        const li = document.createElement("li");
+        li.innerHTML = `<strong>${item.doll}</strong>: ${item.message}`;
+        inquiryList.appendChild(li);
+      });
+    }
+
+    function fakeInquiry(dollName) {
+      const message = prompt(`Send a message about ${dollName}:");
+      if (message && message.trim() !== "") {
+        const inquiries = JSON.parse(localStorage.getItem("inquiries") || "[]");
+        inquiries.push({ doll: dollName, message });
+        localStorage.setItem("inquiries", JSON.stringify(inquiries));
+        alert("Your message has been saved (placeholder).");
+      }
+    }
+
+    function saveWishlist(dollName) {
+      let wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+      if (!wishlist.includes(dollName)) {
+        wishlist.push(dollName);
+        localStorage.setItem("wishlist", JSON.stringify(wishlist));
+        alert(`${dollName} has been added to your wishlist.`);
+      } else {
+        alert(`${dollName} is already in your wishlist.`);
+      }
+    }
+  </script>
 </body>
 </html>
