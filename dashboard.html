@@ -325,8 +325,10 @@ imageInput.addEventListener("change", function () {
           const index = listings.findIndex(l => l.id === id);
           if (index !== -1) {
             listings[index].title = title;
-            listings[index].price = price;
-            listings[index].status = status;
+listings[index].price = price;
+listings[index].status = status;
+listings[index].image = currentImageData || listings[index].image || "";
+
           }
         } else {
           // Add new listing
@@ -336,8 +338,9 @@ imageInput.addEventListener("change", function () {
   title,
   price,
   status,
-  image: currentImageData
+  image: currentImageData || ""
 });
+
 
         }
 
