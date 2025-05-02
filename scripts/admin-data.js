@@ -1,69 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel</title>
-  <link rel="stylesheet" href="/styles/main.css">
-</head>
-<body>
-  <header>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/admin/index.html" class="active">Admin</a>
-    </nav>
-  </header>
+// START: Simulated Data Store for Admin Panel
 
-  <main class="admin-dashboard">
-    <h1>Admin Dashboard</h1>
+// Initialize mock seller and listing data if it doesn't exist
+if (!localStorage.getItem('sellers')) {
+  localStorage.setItem('sellers', JSON.stringify([
+    { id: 1, name: 'JaneDoeNursery', status: 'pending' },
+    { id: 2, name: 'TinyAngels', status: 'pending' }
+  ]));
+}
 
-    <!-- Seller Management Section -->
-    <section class="admin-section">
-      <h2>Pending Seller Applications</h2>
-      <div id="sellerList"></div>
-    </section>
+if (!localStorage.getItem('listings')) {
+  localStorage.setItem('listings', JSON.stringify([
+    { id: 101, name: 'Sweet Baby Emma', status: 'pending' },
+    { id: 102, name: 'Little Star Boy', status: 'pending' }
+  ]));
+}
 
-    <!-- Listing Management Section -->
-    <section class="admin-section">
-      <h2>Listing Submissions</h2>
-      <div id="listingList"></div>
-    </section>
-  </main>
+function getSellers() {
+  return JSON.parse(localStorage.getItem('sellers')) || [];
+}
 
-  <style>
-    .admin-dashboard {
-      max-width: 1000px;
-      margin: 2rem auto;
-      padding: 1rem;
+function updateSeller(id, newStatus) {
+  const sellers = getSellers().map(seller =>
+    seller.id === id ? { ...seller, status: newStatus } : seller
+  );
+  localStorage.setItem('sellers', JSON.stringify(sellers));
+  renderSellers();
+}
+
+function getListings() {
+  return JSON.parse(localStorage.getItem('listings')) || [];
+}
+
+function updateListing(id, newStatus) {
+  const listings = getListings().map(listing =>
+    listing.id === id ? { ...listing, status: newStatus } : listing
+  );
+  localStorage.setItem('listings', JSON.stringify(listings));
+  renderListings();
+}
+
+function renderSellers() {
+  const container = document.getElementById('sellerList');
+  container.innerHTML = '';
+  getSellers().forEach(seller => {
+    if (seller.status === 'pending') {
+      const card = document.createElement('div');
+      card.className = 'admin-card';
+      card.innerHTML = `
+        <p><strong>Seller:</strong> ${seller.name}</p>
+        <button onclick="updateSeller(${seller.id}, 'approved')">Approve</button>
+        <button onclick="updateSeller(${seller.id}, 'rejected')">Reject</button>
+      `;
+      container.appendChild(card);
     }
+  });
+}
 
-    .admin-section {
-      margin-top: 2rem;
+function renderListings() {
+  const container = document.getElementById('listingList');
+  container.innerHTML = '';
+  getListings().forEach(listing => {
+    if (listing.status === 'pending') {
+      const card = document.createElement('div');
+      card.className = 'admin-card';
+      card.innerHTML = `
+        <p><strong>Doll:</strong> ${listing.name}</p>
+        <button onclick="updateListing(${listing.id}, 'approved')">Approve</button>
+        <button onclick="updateListing(${listing.id}, 'rejected')">Reject</button>
+        <button onclick="updateListing(${listing.id}, 'sold')">Mark Sold</button>
+        <button onclick="updateListing(${listing.id}, 'reserved')">Mark Reserved</button>
+        <button onclick="updateListing(${listing.id}, 'available')">Mark Available</button>
+      `;
+      container.appendChild(card);
     }
+  });
+}
 
-    .admin-card {
-      background: #f9f9f9;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 0.75rem;
-      box-shadow: 0 0 5px rgba(0,0,0,0.05);
-    }
-
-    button {
-      padding: 0.5rem 1rem;
-      margin-right: 0.5rem;
-      margin-top: 0.5rem;
-      border: none;
-      border-radius: 0.5rem;
-      font-size: 0.9rem;
-      cursor: pointer;
-    }
-
-    .btn-approve { background: #4CAF50; color: white; }
-    .btn-reject { background: #f44336; color: white; }
-    .btn-status { background: #555; color: white; }
-  </style>
-
-  <script src="/scripts/admin-data.js"></script>
-</body>
-</html>
+// Auto-render on load
+window.addEventListener('DOMContentLoaded', () => {
+  renderSellers();
+  renderListings();
+});
