@@ -202,6 +202,9 @@
   <script>
     window.onload = function () {
       // 🟦 BEGIN: Image Upload Preview & Save
+
+
+// 🟪 BEGIN: Image Upload Preview with Size Limit
 const imageInput = document.getElementById("image");
 const imagePreview = document.getElementById("imagePreview");
 let currentImageData = "";
@@ -209,6 +212,12 @@ let currentImageData = "";
 imageInput.addEventListener("change", function () {
   const file = imageInput.files[0];
   if (file) {
+    if (file.size > 1024 * 1024) { // 1MB limit
+      alert("Image is too large. Please upload a file under 1MB.");
+      imageInput.value = "";
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = function (e) {
       currentImageData = e.target.result;
@@ -218,6 +227,9 @@ imageInput.addEventListener("change", function () {
     reader.readAsDataURL(file);
   }
 });
+// 🟪 END: Image Upload Preview with Size Limit
+
+}
 // 🟦 END: Image Upload Preview & Save
 
       const banner = document.getElementById("testBanner");
@@ -292,15 +304,7 @@ imageInput.addEventListener("change", function () {
           sellerListings.forEach(listing => {
             const div = document.createElement("div");
             div.className = "user-listing";
-            div.innerHTML = `
-  ${listing.image ? `<img src="${listing.image}" style="max-width:100%; margin-bottom:1rem;" />` : ""}
-  <h3>${listing.title}</h3>
-  <p>Status: <strong>${listing.status}</strong></p>
-  <p>Price: $${listing.price}</p>
-  <button onclick="editListing('${listing.id}')">Edit</button>
-  <button onclick="deleteListing('${listing.id}')">Delete</button>
-`;
-
+            
             listingContainer.appendChild(div);
           });
         }
@@ -342,7 +346,7 @@ imageInput.addEventListener("change", function () {
         e.target.reset();
         document.getElementById("formTitle").textContent = "Add New Listing";
       });
-    };
+    
 
     function deleteListing(id) {
       const allListings = JSON.parse(localStorage.getItem("listings") || "[]");
