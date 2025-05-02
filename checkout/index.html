@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checkout</title>
+  <link rel="stylesheet" href="/styles/main.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/nurseries/">Nurseries</a>
+      <a href="/contact-seller.html">Contact</a>
+    </nav>
+  </header>
+
+  <main class="checkout-page">
+    <h1>Checkout</h1>
+    <section class="cart-summary">
+      <h2>Your Cart</h2>
+      <p>No items yet. (Cart logic coming soon.)</p>
+    </section>
+
+    <section class="buyer-details">
+      <h2>Buyer Information</h2>
+      <form>
+        <input type="text" placeholder="Full Name" required />
+        <input type="email" placeholder="Email Address" required />
+        <input type="text" placeholder="Shipping Address" required />
+        <button class="btn" disabled>Adopt Now (Coming Soon)</button>
+      </form>
+    </section>
+  </main>
+
+  <style>
+    .checkout-page {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+    h1, h2 {
+      margin-bottom: 1rem;
+    }
+    form input {
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+    }
+    .btn {
+      padding: 0.75rem 1.5rem;
+      background: #ccc;
+      color: #666;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: not-allowed;
+    }
+  </style>
+</body>
+</html>
