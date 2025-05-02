@@ -93,6 +93,17 @@
       border-radius: 6px;
     }
 
+    .test-mode-banner {
+      background: #fff3cd;
+      color: #856404;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ffeeba;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
     footer {
       margin-top: 4rem;
       padding: 2rem;
@@ -115,6 +126,7 @@
   </header>
 
   <main>
+    <div id="testBanner"></div>
     <h1>Welcome, <span id="userName">[Full Name]</span></h1>
 
     <div class="user-info">
@@ -149,18 +161,24 @@
 
   <script>
     window.onload = function () {
-      // Simulate login data (replace with actual login data if present)
+      const banner = document.getElementById("testBanner");
       const loggedInSeller = JSON.parse(localStorage.getItem("loggedInSeller"));
 
-      // Guard clause: if not logged in
+      // Show test banner if not logged in
       if (!loggedInSeller || !loggedInSeller.id) {
-        alert("You must be logged in to view this dashboard.");
-        window.location.href = "/login.html";
-        return;
+        banner.innerHTML = `<div class="test-mode-banner">You are in test mode — no seller is logged in.</div>`;
       }
 
-      document.getElementById("userName").textContent = loggedInSeller.name;
-      document.getElementById("userEmail").textContent = loggedInSeller.email;
+      const userNameEl = document.getElementById("userName");
+      const userEmailEl = document.getElementById("userEmail");
+
+      if (loggedInSeller && loggedInSeller.name && loggedInSeller.email) {
+        userNameEl.textContent = loggedInSeller.name;
+        userEmailEl.textContent = loggedInSeller.email;
+      } else {
+        userNameEl.textContent = "Demo User";
+        userEmailEl.textContent = "demo@example.com";
+      }
 
       // Wishlist Display
       const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
@@ -209,7 +227,7 @@
       }
 
       // Seller Listings
-      const currentSellerId = loggedInSeller.id;
+      const currentSellerId = loggedInSeller?.id || "seller1";
       const allListings = JSON.parse(localStorage.getItem("listings") || "[]");
       const sellerListings = allListings.filter(l => l.sellerId === currentSellerId);
 
@@ -219,20 +237,27 @@
         listingContainer.innerHTML = "<div class='placeholder'>You haven’t added any listings yet.</div>";
       } else {
         listingContainer.innerHTML = "";
-        sellerListings.forEach(listing => {
+        sellerListings.forEach((listing, index) => {
           const div = document.createElement("div");
           div.className = "user-listing";
           div.innerHTML = `
             <h3>${listing.title}</h3>
             <p>Status: <strong>${listing.status}</strong></p>
             <p>Price: $${listing.price}</p>
-            <button>Edit</button>
-            <button>Delete</button>
+            <button onclick="deleteListing('${listing.id}')">Delete</button>
           `;
           listingContainer.appendChild(div);
         });
       }
     };
+
+    // Delete Listing Function
+    function deleteListing(id) {
+      const allListings = JSON.parse(localStorage.getItem("listings") || "[]");
+      const updatedListings = allListings.filter(l => l.id !== id);
+      localStorage.setItem("listings", JSON.stringify(updatedListings));
+      location.reload();
+    }
   </script>
 </body>
 </html>
