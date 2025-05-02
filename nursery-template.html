@@ -175,7 +175,7 @@
     }
 
     function fakeInquiry(dollName) {
-      const message = prompt(`Send a message about ${dollName}:");
+      const message = prompt(`Send a message about ${dollName}:`);
       if (message && message.trim() !== "") {
         const inquiries = JSON.parse(localStorage.getItem("inquiries") || "[]");
         inquiries.push({ doll: dollName, message });
