@@ -56,6 +56,12 @@
       color: #9caaa0;
       margin-bottom: 1rem;
     }
+    .status {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #d89c9c;
+      margin-bottom: 1rem;
+    }
     .details {
       margin-bottom: 2rem;
     }
@@ -81,7 +87,11 @@
       color: white;
       cursor: pointer;
     }
-    button:hover {
+    button[disabled] {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    button:hover:not([disabled]) {
       background-color: #c88484;
     }
     #confirmation {
@@ -116,9 +126,10 @@
     </div>
     <h1>Doll Name Here</h1>
     <div class="price">$375 + S&H</div>
+    <div class="status">This item is no longer available</div>
 
     <div class="details">
-      <p><strong>Status:</strong> Available</p>
+      <p><strong>Status:</strong> Sold</p>
       <p><strong>Awake/Asleep:</strong> Asleep</p>
       <p><strong>Material:</strong> Vinyl</p>
       <p><strong>Size:</strong> 20"</p>
@@ -132,8 +143,8 @@
     </div>
 
     <div class="buttons">
-      <button onclick="fakeInquiry('Doll Name Here')">Inquire</button>
-      <button onclick="saveWishlist('Doll Name Here')">Save to Wishlist</button>
+      <button disabled>This doll has been sold</button>
+      <button onclick="saveWishlist('Doll Name Here')">♡ Save to Wishlist</button>
     </div>
 
     <div id="confirmation"></div>
@@ -144,17 +155,6 @@
   </footer>
 
   <script>
-    function fakeInquiry(dollName) {
-      const message = prompt(`Send a message about ${dollName}:`);
-      if (message && message.trim() !== "") {
-        const inquiries = JSON.parse(localStorage.getItem("inquiries") || "[]");
-        inquiries.push({ doll: dollName, message });
-        localStorage.setItem("inquiries", JSON.stringify(inquiries));
-
-        document.getElementById("confirmation").innerText = `Your message has been sent to Sweet Pea Reborns.`;
-      }
-    }
-
     function saveWishlist(dollName) {
       let wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
       if (!wishlist.includes(dollName)) {
