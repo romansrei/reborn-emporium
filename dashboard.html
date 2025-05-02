@@ -104,6 +104,30 @@
       font-size: 0.95rem;
     }
 
+    form#newListingForm {
+      background: #f1f1f1;
+      padding: 1rem;
+      border-radius: 6px;
+    }
+    form#newListingForm input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    form#newListingForm button {
+      padding: 0.5rem 1rem;
+      background: #444;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    form#newListingForm button:hover {
+      background: #000;
+    }
+
     footer {
       margin-top: 4rem;
       padding: 2rem;
@@ -153,6 +177,16 @@
       <h2>My Listings</h2>
       <div id="myListingsContainer" class="placeholder">Loading your listings...</div>
     </div>
+
+    <div class="section">
+      <h2>Add New Listing</h2>
+      <form id="newListingForm">
+        <input type="text" id="title" placeholder="Doll Title" required />
+        <input type="text" id="price" placeholder="Price" required />
+        <input type="text" id="status" placeholder="Status (Available, Sold, Reserved)" required />
+        <button type="submit">Add Listing</button>
+      </form>
+    </div>
   </main>
 
   <footer>
@@ -164,7 +198,6 @@
       const banner = document.getElementById("testBanner");
       const loggedInSeller = JSON.parse(localStorage.getItem("loggedInSeller"));
 
-      // Show test banner if not logged in
       if (!loggedInSeller || !loggedInSeller.id) {
         banner.innerHTML = `<div class="test-mode-banner">You are in test mode — no seller is logged in.</div>`;
       }
@@ -180,22 +213,18 @@
         userEmailEl.textContent = "demo@example.com";
       }
 
-      // Wishlist Display
       const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
       const wishlistList = document.getElementById("wishlist");
 
       function updateWishlistDisplay() {
         wishlistList.innerHTML = "";
-
         if (wishlist.length === 0) {
           wishlistList.innerHTML = "<li style='color:#777'>Your wishlist is currently empty.</li>";
           return;
         }
-
         wishlist.forEach((name, index) => {
           const li = document.createElement("li");
           li.textContent = name + " ";
-
           const removeBtn = document.createElement("button");
           removeBtn.textContent = "❌";
           removeBtn.style.marginLeft = "8px";
@@ -204,7 +233,6 @@
             localStorage.setItem("wishlist", JSON.stringify(wishlist));
             updateWishlistDisplay();
           };
-
           li.appendChild(removeBtn);
           wishlistList.appendChild(li);
         });
@@ -212,10 +240,8 @@
 
       updateWishlistDisplay();
 
-      // Inquiry Display
       const inquiryList = document.getElementById("inquiryList");
       const inquiries = JSON.parse(localStorage.getItem("inquiries") || "[]");
-
       if (inquiries.length === 0) {
         inquiryList.innerHTML = "<li style='color:#777'>You haven't sent any inquiries yet.</li>";
       } else {
@@ -226,32 +252,52 @@
         });
       }
 
-      // Seller Listings
       const currentSellerId = loggedInSeller?.id || "seller1";
       const allListings = JSON.parse(localStorage.getItem("listings") || "[]");
-      const sellerListings = allListings.filter(l => l.sellerId === currentSellerId);
+      let sellerListings = allListings.filter(l => l.sellerId === currentSellerId);
 
       const listingContainer = document.getElementById("myListingsContainer");
-
-      if (sellerListings.length === 0) {
-        listingContainer.innerHTML = "<div class='placeholder'>You haven’t added any listings yet.</div>";
-      } else {
-        listingContainer.innerHTML = "";
-        sellerListings.forEach((listing, index) => {
-          const div = document.createElement("div");
-          div.className = "user-listing";
-          div.innerHTML = `
-            <h3>${listing.title}</h3>
-            <p>Status: <strong>${listing.status}</strong></p>
-            <p>Price: $${listing.price}</p>
-            <button onclick="deleteListing('${listing.id}')">Delete</button>
-          `;
-          listingContainer.appendChild(div);
-        });
+      function renderListings() {
+        sellerListings = JSON.parse(localStorage.getItem("listings") || "[]").filter(l => l.sellerId === currentSellerId);
+        if (sellerListings.length === 0) {
+          listingContainer.innerHTML = "<div class='placeholder'>You haven’t added any listings yet.</div>";
+        } else {
+          listingContainer.innerHTML = "";
+          sellerListings.forEach(listing => {
+            const div = document.createElement("div");
+            div.className = "user-listing";
+            div.innerHTML = `
+              <h3>${listing.title}</h3>
+              <p>Status: <strong>${listing.status}</strong></p>
+              <p>Price: $${listing.price}</p>
+              <button onclick="deleteListing('${listing.id}')">Delete</button>
+            `;
+            listingContainer.appendChild(div);
+          });
+        }
       }
+
+      renderListings();
+
+      document.getElementById("newListingForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const title = document.getElementById("title").value;
+        const price = document.getElementById("price").value;
+        const status = document.getElementById("status").value;
+        const newListing = {
+          id: Date.now().toString(),
+          sellerId: currentSellerId,
+          title,
+          price,
+          status
+        };
+        allListings.push(newListing);
+        localStorage.setItem("listings", JSON.stringify(allListings));
+        renderListings();
+        e.target.reset();
+      });
     };
 
-    // Delete Listing Function
     function deleteListing(id) {
       const allListings = JSON.parse(localStorage.getItem("listings") || "[]");
       const updatedListings = allListings.filter(l => l.id !== id);
