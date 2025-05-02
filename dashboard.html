@@ -115,10 +115,10 @@
   </header>
 
   <main>
-    <h1>Welcome, [Full Name]</h1>
+    <h1>Welcome, <span id="userName">[Full Name]</span></h1>
 
     <div class="user-info">
-      <p><strong>Email:</strong> user@example.com</p>
+      <p><strong>Email:</strong> <span id="userEmail">user@example.com</span></p>
       <p><a href="/login.html">Log out</a></p>
     </div>
 
@@ -149,6 +149,19 @@
 
   <script>
     window.onload = function () {
+      // Simulate login data (replace with actual login data if present)
+      const loggedInSeller = JSON.parse(localStorage.getItem("loggedInSeller"));
+
+      // Guard clause: if not logged in
+      if (!loggedInSeller || !loggedInSeller.id) {
+        alert("You must be logged in to view this dashboard.");
+        window.location.href = "/login.html";
+        return;
+      }
+
+      document.getElementById("userName").textContent = loggedInSeller.name;
+      document.getElementById("userEmail").textContent = loggedInSeller.email;
+
       // Wishlist Display
       const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
       const wishlistList = document.getElementById("wishlist");
@@ -196,7 +209,7 @@
       }
 
       // Seller Listings
-      const currentSellerId = "seller1";
+      const currentSellerId = loggedInSeller.id;
       const allListings = JSON.parse(localStorage.getItem("listings") || "[]");
       const sellerListings = allListings.filter(l => l.sellerId === currentSellerId);
 
