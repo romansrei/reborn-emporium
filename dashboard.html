@@ -180,13 +180,18 @@
 
     <div class="section">
       <h2><span id="formTitle">Add New Listing</span></h2>
-      <form id="newListingForm">
-        <input type="hidden" id="editId" />
-        <input type="text" id="title" placeholder="Doll Title" required />
-        <input type="text" id="price" placeholder="Price" required />
-        <input type="text" id="status" placeholder="Status (Available, Sold, Reserved)" required />
-        <button type="submit">Save Listing</button>
-      </form>
+      <!-- 🟩 BEGIN: NEW LISTING FORM -->
+<form id="newListingForm">
+  <input type="hidden" id="editId" />
+  <input type="text" id="title" placeholder="Doll Title" required />
+  <input type="text" id="price" placeholder="Price" required />
+  <input type="text" id="status" placeholder="Status (Available, Sold, Reserved)" required />
+  <input type="file" id="image" accept="image/*" />
+  <img id="imagePreview" class="preview" style="display:none;" />
+  <button type="submit">Save Listing</button>
+</form>
+<!-- 🟩 END: NEW LISTING FORM -->
+
     </div>
   </main>
 
@@ -196,6 +201,25 @@
 
   <script>
     window.onload = function () {
+      // 🟦 BEGIN: Image Upload Preview & Save
+const imageInput = document.getElementById("image");
+const imagePreview = document.getElementById("imagePreview");
+let currentImageData = "";
+
+imageInput.addEventListener("change", function () {
+  const file = imageInput.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      currentImageData = e.target.result;
+      imagePreview.src = currentImageData;
+      imagePreview.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+  }
+});
+// 🟦 END: Image Upload Preview & Save
+
       const banner = document.getElementById("testBanner");
       const loggedInSeller = JSON.parse(localStorage.getItem("loggedInSeller"));
 
@@ -269,12 +293,14 @@
             const div = document.createElement("div");
             div.className = "user-listing";
             div.innerHTML = `
-              <h3>${listing.title}</h3>
-              <p>Status: <strong>${listing.status}</strong></p>
-              <p>Price: $${listing.price}</p>
-              <button onclick="editListing('${listing.id}')">Edit</button>
-              <button onclick="deleteListing('${listing.id}')">Delete</button>
-            `;
+  ${listing.image ? `<img src="${listing.image}" style="max-width:100%; margin-bottom:1rem;" />` : ""}
+  <h3>${listing.title}</h3>
+  <p>Status: <strong>${listing.status}</strong></p>
+  <p>Price: $${listing.price}</p>
+  <button onclick="editListing('${listing.id}')">Edit</button>
+  <button onclick="deleteListing('${listing.id}')">Delete</button>
+`;
+
             listingContainer.appendChild(div);
           });
         }
@@ -301,12 +327,14 @@
         } else {
           // Add new listing
           listings.push({
-            id: Date.now().toString(),
-            sellerId: currentSellerId,
-            title,
-            price,
-            status
-          });
+  id: Date.now().toString(),
+  sellerId: currentSellerId,
+  title,
+  price,
+  status,
+  image: currentImageData
+});
+
         }
 
         localStorage.setItem("listings", JSON.stringify(listings));
