@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/admin/index.html" class="active">Admin</a>
+    </nav>
+  </header>
+
+  <main class="admin-dashboard">
+    <h1>Admin Dashboard</h1>
+
+    <!-- Seller Management Section -->
+    <section class="admin-section">
+      <h2>Pending Seller Applications</h2>
+      <div id="sellerList"></div>
+    </section>
+
+    <!-- Listing Management Section -->
+    <section class="admin-section">
+      <h2>Listing Submissions</h2>
+      <div id="listingList"></div>
+    </section>
+  </main>
+
+  <style>
+    .admin-dashboard {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+
+    .admin-section {
+      margin-top: 2rem;
+    }
+
+    .admin-card {
+      background: #f9f9f9;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      margin-right: 0.5rem;
+      margin-top: 0.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .btn-approve { background: #4CAF50; color: white; }
+    .btn-reject { background: #f44336; color: white; }
+    .btn-status { background: #555; color: white; }
+  </style>
+
+  <script src="/scripts/admin-data.js"></script>
+</body>
+</html>
