@@ -179,12 +179,13 @@
     </div>
 
     <div class="section">
-      <h2>Add New Listing</h2>
+      <h2><span id="formTitle">Add New Listing</span></h2>
       <form id="newListingForm">
+        <input type="hidden" id="editId" />
         <input type="text" id="title" placeholder="Doll Title" required />
         <input type="text" id="price" placeholder="Price" required />
         <input type="text" id="status" placeholder="Status (Available, Sold, Reserved)" required />
-        <button type="submit">Add Listing</button>
+        <button type="submit">Save Listing</button>
       </form>
     </div>
   </main>
@@ -253,16 +254,17 @@
       }
 
       const currentSellerId = loggedInSeller?.id || "seller1";
-      const allListings = JSON.parse(localStorage.getItem("listings") || "[]");
-      let sellerListings = allListings.filter(l => l.sellerId === currentSellerId);
-
       const listingContainer = document.getElementById("myListingsContainer");
+      const allListings = JSON.parse(localStorage.getItem("listings") || "[]");
+
       function renderListings() {
-        sellerListings = JSON.parse(localStorage.getItem("listings") || "[]").filter(l => l.sellerId === currentSellerId);
+        const updated = JSON.parse(localStorage.getItem("listings") || "[]");
+        const sellerListings = updated.filter(l => l.sellerId === currentSellerId);
+        listingContainer.innerHTML = "";
+
         if (sellerListings.length === 0) {
           listingContainer.innerHTML = "<div class='placeholder'>You haven’t added any listings yet.</div>";
         } else {
-          listingContainer.innerHTML = "";
           sellerListings.forEach(listing => {
             const div = document.createElement("div");
             div.className = "user-listing";
@@ -270,6 +272,7 @@
               <h3>${listing.title}</h3>
               <p>Status: <strong>${listing.status}</strong></p>
               <p>Price: $${listing.price}</p>
+              <button onclick="editListing('${listing.id}')">Edit</button>
               <button onclick="deleteListing('${listing.id}')">Delete</button>
             `;
             listingContainer.appendChild(div);
@@ -281,20 +284,35 @@
 
       document.getElementById("newListingForm").addEventListener("submit", function(e) {
         e.preventDefault();
+        const id = document.getElementById("editId").value;
         const title = document.getElementById("title").value;
         const price = document.getElementById("price").value;
         const status = document.getElementById("status").value;
-        const newListing = {
-          id: Date.now().toString(),
-          sellerId: currentSellerId,
-          title,
-          price,
-          status
-        };
-        allListings.push(newListing);
-        localStorage.setItem("listings", JSON.stringify(allListings));
+        const listings = JSON.parse(localStorage.getItem("listings") || "[]");
+
+        if (id) {
+          // Edit existing listing
+          const index = listings.findIndex(l => l.id === id);
+          if (index !== -1) {
+            listings[index].title = title;
+            listings[index].price = price;
+            listings[index].status = status;
+          }
+        } else {
+          // Add new listing
+          listings.push({
+            id: Date.now().toString(),
+            sellerId: currentSellerId,
+            title,
+            price,
+            status
+          });
+        }
+
+        localStorage.setItem("listings", JSON.stringify(listings));
         renderListings();
         e.target.reset();
+        document.getElementById("formTitle").textContent = "Add New Listing";
       });
     };
 
@@ -303,6 +321,19 @@
       const updatedListings = allListings.filter(l => l.id !== id);
       localStorage.setItem("listings", JSON.stringify(updatedListings));
       location.reload();
+    }
+
+    function editListing(id) {
+      const listings = JSON.parse(localStorage.getItem("listings") || "[]");
+      const listing = listings.find(l => l.id === id);
+      if (listing) {
+        document.getElementById("editId").value = listing.id;
+        document.getElementById("title").value = listing.title;
+        document.getElementById("price").value = listing.price;
+        document.getElementById("status").value = listing.status;
+        document.getElementById("formTitle").textContent = "Edit Listing";
+        window.scrollTo({ top: document.getElementById("newListingForm").offsetTop - 50, behavior: 'smooth' });
+      }
     }
   </script>
 </body>
