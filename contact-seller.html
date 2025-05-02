@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact the Artist</title>
+  <link rel="stylesheet" href="/styles/main.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/nurseries/">Nurseries</a>
+      <a href="/contact-seller.html" class="active">Contact</a>
+    </nav>
+  </header>
+
+  <main class="contact-form-page">
+    <section class="contact-wrapper">
+      <h1>Contact a Nursery</h1>
+      <p>If you'd like to reach out to a reborn artist, please fill out the form below.</p>
+      <form id="globalContactForm">
+        <input type="text" id="yourName" placeholder="Your Name" required />
+        <input type="email" id="yourEmail" placeholder="Your Email" required />
+        <select id="nurserySelect">
+          <option value="">Select a Nursery</option>
+          <option value="nursery-1">Nursery One</option>
+          <option value="nursery-2">Nursery Two</option>
+          <option value="nursery-3">Nursery Three</option>
+        </select>
+        <textarea id="yourMessage" placeholder="Your Message" required></textarea>
+        <button type="submit" class="btn">Send Message</button>
+      </form>
+    </section>
+  </main>
+
+  <style>
+    .contact-form-page {
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+
+    .contact-wrapper h1 {
+      margin-bottom: 1rem;
+    }
+
+    #globalContactForm input,
+    #globalContactForm select,
+    #globalContactForm textarea {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+    }
+
+    #globalContactForm button {
+      background: #333;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+
+    #globalContactForm button:hover {
+      background: #555;
+    }
+  </style>
+
+  <script>
+    document.getElementById('globalContactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Your message has been sent! (Placeholder logic)');
+      this.reset();
+    });
+  </script>
+</body>
+</html>
