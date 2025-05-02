@@ -2,169 +2,177 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Doll Detail – Reborn Emporium</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f5f3ef;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
-    header, footer {
-      background-color: #ffffff;
-      padding: 1rem 2rem;
-      border-bottom: 1px solid #ddd;
-    }
-    .logo {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #4e5c6e;
-    }
-    nav a {
-      margin-left: 1.5rem;
-      text-decoration: none;
-      color: #555;
-      font-weight: 500;
-    }
-    .container {
-      max-width: 800px;
-      margin: 2rem auto;
-      background: #fff;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-    }
-    .doll-image {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .doll-image img {
-      width: 100%;
-      max-width: 300px;
-      border-radius: 12px;
-    }
-    h1 {
-      font-size: 1.75rem;
-      color: #4e5c6e;
-      margin-bottom: 0.5rem;
-    }
-    .price {
-      font-size: 1.25rem;
-      color: #9caaa0;
-      margin-bottom: 1rem;
-    }
-    .status {
-      font-size: 1rem;
-      font-weight: 600;
-      color: #d89c9c;
-      margin-bottom: 1rem;
-    }
-    .details {
-      margin-bottom: 2rem;
-    }
-    .details p {
-      margin: 0.3rem 0;
-    }
-    .description {
-      margin-top: 1rem;
-      font-size: 0.95rem;
-      color: #555;
-    }
-    .buttons {
-      display: flex;
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-    button {
-      padding: 0.5rem 1rem;
-      font-size: 0.95rem;
-      background-color: #d89c9c;
-      border: none;
-      border-radius: 6px;
-      color: white;
-      cursor: pointer;
-    }
-    button[disabled] {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-    button:hover:not([disabled]) {
-      background-color: #c88484;
-    }
-    #confirmation {
-      margin-top: 1rem;
-      font-size: 0.95rem;
-      color: #4e5c6e;
-      font-weight: 500;
-    }
-    footer {
-      text-align: center;
-      font-size: 0.85rem;
-      color: #aaa;
-      margin-top: 4rem;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Doll Details</title>
+  <link rel="stylesheet" href="/styles/main.css" />
 </head>
 <body>
   <header>
-    <div class="logo">Reborn Emporium</div>
     <nav>
       <a href="/">Home</a>
-      <a href="/register.html">Register</a>
-      <a href="/login.html">Login</a>
-      <a href="/dashboard.html">Dashboard</a>
-      <a href="/nurseries.html">Nursery Directory</a>
+      <a href="/nurseries/">Nurseries</a>
+      <a href="/contact-seller.html">Contact</a>
     </nav>
   </header>
 
-  <div class="container">
-    <div class="doll-image">
-      <img src="https://via.placeholder.com/300x400.png?text=Doll+Photo" alt="Doll Name">
-    </div>
-    <h1>Doll Name Here</h1>
-    <div class="price">$375 + S&H</div>
-    <div class="status">This item is no longer available</div>
+  <main class="doll-details">
+    <section class="doll-info">
+      <img src="/images/doll-placeholder.jpg" alt="Doll Image" class="doll-image" />
+      <div class="doll-meta">
+        <h1>Doll Name Placeholder</h1>
+        <p><strong>Artist:</strong> Jane Doe</p>
+        <p><strong>Material:</strong> Silicone</p>
+        <p><strong>Eyes:</strong> Closed</p>
+        <p><strong>Hair:</strong> Rooted</p>
+        <p><strong>Status:</strong> Sold</p>
 
-    <div class="details">
-      <p><strong>Status:</strong> Sold</p>
-      <p><strong>Awake/Asleep:</strong> Asleep</p>
-      <p><strong>Material:</strong> Vinyl</p>
-      <p><strong>Size:</strong> 20"</p>
-      <p><strong>Sculpt:</strong> Levi by Bonnie Brown</p>
-      <p><strong>COA:</strong> Included</p>
-      <p><strong>Nursery:</strong> <a href="nursery-template.html">Sweet Pea Reborns</a></p>
-    </div>
+        <!-- Inquiry Button (disabled for sold) -->
+        <button class="btn btn-disabled" disabled>
+          Inquire (Sold)
+        </button>
 
-    <div class="description">
-      <p>This precious baby has been lovingly hand-painted with multiple layers of Genesis Heat Set Paints and sealed for durability. Features include rooted mohair, magnetic pacifier, and weighted body for realism.</p>
-    </div>
+        <!-- Contact Seller Button -->
+        <button id="contactSellerBtn" class="btn btn-outline" onclick="openContactForm()">
+          Contact Seller
+        </button>
+      </div>
+    </section>
+  </main>
 
-    <div class="buttons">
-      <button disabled>This doll has been sold</button>
-      <button onclick="saveWishlist('Doll Name Here')">♡ Save to Wishlist</button>
+  <!-- Contact Seller Modal -->
+  <div id="contactSellerModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close" onclick="closeContactForm()">&times;</span>
+      <h2>Contact the Artist</h2>
+      <form id="contactForm">
+        <input type="text" id="buyerName" placeholder="Your Name" required />
+        <input type="email" id="buyerEmail" placeholder="Your Email" required />
+        <textarea id="buyerMessage" placeholder="Your Message to the Artist" required></textarea>
+        <button type="submit" class="btn">Send Message</button>
+      </form>
     </div>
-
-    <div id="confirmation"></div>
   </div>
 
-  <footer>
-    &copy; 2025 Reborn Emporium. All rights reserved.
-  </footer>
+  <style>
+    .doll-details {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .doll-info {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .doll-image {
+      width: 300px;
+      border-radius: 1rem;
+    }
+
+    .doll-meta {
+      flex-grow: 1;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .btn-outline {
+      background: none;
+      border: 2px solid #444;
+      color: #444;
+    }
+
+    .btn-outline:hover {
+      background: #f4f4f4;
+    }
+
+    .btn-disabled {
+      background: #ccc;
+      color: #666;
+      cursor: not-allowed;
+    }
+
+    /* Modal Styles */
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 1rem;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      position: relative;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .modal .close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    #contactForm input,
+    #contactForm textarea {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+    }
+
+    #contactForm button {
+      background: #333;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+
+    #contactForm button:hover {
+      background: #555;
+    }
+  </style>
 
   <script>
-    function saveWishlist(dollName) {
-      let wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
-      if (!wishlist.includes(dollName)) {
-        wishlist.push(dollName);
-        localStorage.setItem("wishlist", JSON.stringify(wishlist));
-        alert(`${dollName} has been added to your wishlist.`);
-      } else {
-        alert(`${dollName} is already in your wishlist.`);
-      }
+    function openContactForm() {
+      document.getElementById('contactSellerModal').classList.remove('hidden');
     }
+
+    function closeContactForm() {
+      document.getElementById('contactSellerModal').classList.add('hidden');
+    }
+
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Message sent to seller! (This is a placeholder)');
+      closeContactForm();
+    });
   </script>
 </body>
 </html>
