@@ -17,40 +17,18 @@
   <main class="admin-dashboard">
     <h1>Admin Dashboard</h1>
 
+    <button id="resetDataBtn">🔄 Reset Demo Data</button>
+
     <!-- Seller Management Section -->
     <section class="admin-section">
       <h2>Pending Seller Applications</h2>
-      <div class="admin-card">
-        <p><strong>Seller:</strong> JaneDoeNursery</p>
-        <button class="btn-approve">Approve</button>
-        <button class="btn-reject">Reject</button>
-      </div>
-      <div class="admin-card">
-        <p><strong>Seller:</strong> TinyAngels</p>
-        <button class="btn-approve">Approve</button>
-        <button class="btn-reject">Reject</button>
-      </div>
+      <div id="sellerList"></div>
     </section>
 
     <!-- Listing Management Section -->
     <section class="admin-section">
       <h2>Listing Submissions</h2>
-      <div class="admin-card">
-        <p><strong>Doll:</strong> Sweet Baby Emma</p>
-        <button class="btn-approve">Approve</button>
-        <button class="btn-reject">Reject</button>
-        <button class="btn-status">Mark Sold</button>
-        <button class="btn-status">Mark Reserved</button>
-        <button class="btn-status">Mark Available</button>
-      </div>
-      <div class="admin-card">
-        <p><strong>Doll:</strong> Little Star Boy</p>
-        <button class="btn-approve">Approve</button>
-        <button class="btn-reject">Reject</button>
-        <button class="btn-status">Mark Sold</button>
-        <button class="btn-status">Mark Reserved</button>
-        <button class="btn-status">Mark Available</button>
-      </div>
+      <div id="listingList"></div>
     </section>
   </main>
 
@@ -73,7 +51,7 @@
       box-shadow: 0 0 5px rgba(0,0,0,0.05);
     }
 
-    .btn-approve, .btn-reject, .btn-status {
+    button {
       padding: 0.5rem 1rem;
       margin-right: 0.5rem;
       margin-top: 0.5rem;
@@ -83,18 +61,25 @@
       cursor: pointer;
     }
 
+    #resetDataBtn {
+      background: #eee;
+      color: #333;
+      border: 1px solid #ccc;
+      margin-bottom: 1.5rem;
+    }
+
     .btn-approve { background: #4CAF50; color: white; }
     .btn-reject { background: #f44336; color: white; }
     .btn-status { background: #555; color: white; }
   </style>
 
+  <script src="/scripts/admin-data.js"></script>
   <script>
-    // Placeholder logic for demo/testing only
-    const buttons = document.querySelectorAll('button');
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        alert(`${btn.textContent} clicked. (Placeholder)`);
-      });
+    document.getElementById('resetDataBtn').addEventListener('click', () => {
+      localStorage.removeItem('sellers');
+      localStorage.removeItem('listings');
+      alert('Demo data reset. Reloading...');
+      location.reload();
     });
   </script>
 </body>
