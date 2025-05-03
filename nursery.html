@@ -1,10 +1,9 @@
-<!-- This is nursery-template.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sweet Pea Reborns – Reborn Emporium</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nursery – Reborn Emporium</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * {
@@ -72,6 +71,7 @@
       padding: 1rem;
       text-align: center;
       box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      margin-bottom: 1.5rem;
     }
     .doll-card img {
       max-width: 100%;
@@ -133,27 +133,16 @@
 
   <main>
     <div class="nursery-header">
-      <h1>Sweet Pea Reborns</h1>
-      <p>Based in Texas, USA</p>
+      <h1 id="nurseryName">Nursery Name</h1>
+      <p id="nurseryLocation">Nursery Location</p>
     </div>
 
     <section class="about">
       <h2>About the Artist</h2>
-      <p>Welcome to Sweet Pea Reborns. Each doll is handcrafted with care and realism in mind. I specialize in lifelike skin tones, rooted hair, and fine details that bring each baby to life.</p>
+      <p id="nurseryBio">This nursery specializes in lifelike handmade dolls.</p>
     </section>
 
-    <ul id="inquiryList"></ul>
-
-    <!-- 🟢 START: Doll Listing Card -->
-    <div class="doll-card">
-      <img src="https://via.placeholder.com/240x320.png?text=Doll+3" alt="Doll 3">
-      <h2>Doll Name 3</h2>
-      <p>$390 – Ready to ship</p>
-      <a href="doll-detail.html">View Details →</a>
-      <button onclick="fakeInquiry('Doll Name 3')">Inquire</button>
-      <button onclick="saveWishlist('Doll Name 3')">♡ Save to Wishlist</button>
-    </div>
-    <!-- 🔴 END: Doll Listing Card -->
+    <div id="listingContainer"></div>
   </main>
 
   <footer>
@@ -161,17 +150,38 @@
   </footer>
 
   <script>
-    // Inquiries Logic
-    const inquiryList = document.getElementById("inquiryList");
-    const inquiries = JSON.parse(localStorage.getItem("inquiries") || "[]");
-    if (inquiries.length === 0) {
-      inquiryList.innerHTML = "<li style='color:#777'>You haven't sent any inquiries yet.</li>";
-    } else {
-      inquiries.forEach(item => {
-        const li = document.createElement("li");
-        li.innerHTML = `<strong>${item.doll}</strong>: ${item.message}`;
-        inquiryList.appendChild(li);
-      });
+    const urlParams = new URLSearchParams(window.location.search);
+    const sellerId = urlParams.get("seller");
+    const sellers = JSON.parse(localStorage.getItem("sellers") || "[]");
+    const listings = JSON.parse(localStorage.getItem("listings") || "[]");
+
+    const seller = sellers.find(s => s.id === sellerId);
+    const listingContainer = document.getElementById("listingContainer");
+
+    if (seller) {
+      document.getElementById("nurseryName").textContent = seller.name;
+      document.getElementById("nurseryLocation").textContent = seller.location || "Location not specified";
+      document.getElementById("nurseryBio").textContent = seller.bio || "This nursery specializes in lifelike handmade dolls.";
+
+      const sellerListings = listings.filter(l => l.sellerId === sellerId);
+
+      if (sellerListings.length === 0) {
+        listingContainer.innerHTML = "<p style='color:#777;text-align:center;'>This nursery hasn't listed any dolls yet.</p>";
+      } else {
+        sellerListings.forEach(listing => {
+          const div = document.createElement("div");
+          div.className = "doll-card";
+          div.innerHTML = `
+            ${listing.image ? `<img src="${listing.image}" alt="${listing.title}">` : ""}
+            <h2>${listing.title}</h2>
+            <p>$${listing.price} – ${listing.status}</p>
+            <a href="#">View Details →</a>
+            <button onclick="fakeInquiry('${listing.title}')">Inquire</button>
+            <button onclick="saveWishlist('${listing.title}')">♡ Save to Wishlist</button>
+          `;
+          listingContainer.appendChild(div);
+        });
+      }
     }
 
     function fakeInquiry(dollName) {
