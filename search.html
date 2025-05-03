@@ -168,7 +168,7 @@
           ${listing.image ? `<img src="${listing.image}" alt="${listing.title}">` : ""}
           <h2>${listing.title}</h2>
           <p>$${listing.price} – ${listing.status}</p>
-          <a href="#">View Details →</a>
+          <a href="doll-detail.html?id=${listing.id}">View Details →</a>
           <button onclick="fakeInquiry('${listing.title}')">Inquire</button>
           <button onclick="saveWishlist('${listing.title}')">♡ Save to Wishlist</button>
         `;
