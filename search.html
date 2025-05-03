@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search Dolls – Reborn Emporium</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #ffffff;
+      border-bottom: 1px solid #ddd;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #444;
+    }
+    nav a {
+      margin-left: 1.5rem;
+      text-decoration: none;
+      color: #555;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a:hover {
+      color: #000;
+    }
+    main {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    }
+    h1 {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .search-bar {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .search-bar input, .search-bar select {
+      flex: 1;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .doll-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      margin-bottom: 1.5rem;
+    }
+    .doll-card img {
+      max-width: 100%;
+      border-radius: 6px;
+      margin-bottom: 0.75rem;
+    }
+    .doll-card h2 {
+      font-size: 1rem;
+      margin-bottom: 0.3rem;
+    }
+    .doll-card p {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .doll-card a {
+      display: inline-block;
+      margin: 0.5rem 0;
+      font-size: 0.9rem;
+      color: #007b83;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .doll-card button {
+      margin: 0.3rem;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.9rem;
+      background-color: #d89c9c;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .doll-card button:hover {
+      background-color: #c88484;
+    }
+    .placeholder {
+      text-align: center;
+      color: #777;
+      font-style: italic;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Reborn Emporium</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/register.html">Register</a>
+      <a href="/login.html">Login</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/nurseries.html">Nursery Directory</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Search Dolls</h1>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search by title or keywords...">
+      <select id="statusFilter">
+        <option value="">All Statuses</option>
+        <option value="Available">Available</option>
+        <option value="Sold">Sold</option>
+        <option value="Reserved">Reserved</option>
+      </select>
+    </div>
+    <div id="results"></div>
+  </main>
+
+  <script>
+    const listings = JSON.parse(localStorage.getItem("listings") || "[]");
+    const resultsContainer = document.getElementById("results");
+    const searchInput = document.getElementById("searchInput");
+    const statusFilter = document.getElementById("statusFilter");
+
+    function renderResults() {
+      const keyword = searchInput.value.toLowerCase();
+      const status = statusFilter.value;
+
+      const filtered = listings.filter(listing => {
+        const matchesKeyword = listing.title.toLowerCase().includes(keyword);
+        const matchesStatus = status === "" || listing.status === status;
+        return matchesKeyword && matchesStatus;
+      });
+
+      resultsContainer.innerHTML = "";
+
+      if (filtered.length === 0) {
+        resultsContainer.innerHTML = "<div class='placeholder'>No listings found.</div>";
+        return;
+      }
+
+      filtered.forEach(listing => {
+        const div = document.createElement("div");
+        div.className = "doll-card";
+        div.innerHTML = `
+          ${listing.image ? `<img src="${listing.image}" alt="${listing.title}">` : ""}
+          <h2>${listing.title}</h2>
+          <p>$${listing.price} – ${listing.status}</p>
+          <a href="#">View Details →</a>
+          <button onclick="fakeInquiry('${listing.title}')">Inquire</button>
+          <button onclick="saveWishlist('${listing.title}')">♡ Save to Wishlist</button>
+        `;
+        resultsContainer.appendChild(div);
+      });
+    }
+
+    function fakeInquiry(dollName) {
+      const message = prompt(`Send a message about ${dollName}:`);
+      if (message && message.trim() !== "") {
+        const inquiries = JSON.parse(localStorage.getItem("inquiries") || "[]");
+        inquiries.push({ doll: dollName, message });
+        localStorage.setItem("inquiries", JSON.stringify(inquiries));
+        alert("Your message has been saved (placeholder).");
+      }
+    }
+
+    function saveWishlist(dollName) {
+      let wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+      if (!wishlist.includes(dollName)) {
+        wishlist.push(dollName);
+        localStorage.setItem("wishlist", JSON.stringify(wishlist));
+        alert(`${dollName} has been added to your wishlist.`);
+      } else {
+        alert(`${dollName} is already in your wishlist.`);
+      }
+    }
+
+    searchInput.addEventListener("input", renderResults);
+    statusFilter.addEventListener("change", renderResults);
+
+    renderResults();
+  </script>
+</body>
+</html>
