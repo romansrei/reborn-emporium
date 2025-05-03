@@ -297,22 +297,33 @@ imageInput.addEventListener("change", function () {
 
       function renderListings() {
         const updated = JSON.parse(localStorage.getItem("listings") || "[]");
-        const sellerListings = updated.filter(l => l.sellerId === currentSellerId);
-        listingContainer.innerHTML = "";
+const sellerListings = updated.filter(l => l.sellerId === currentSellerId);
+listingContainer.innerHTML = "";
 
-        if (sellerListings.length === 0) {
-          listingContainer.innerHTML = "<div class='placeholder'>You haven’t added any listings yet.</div>";
-        } else {
-          sellerListings.forEach(listing => {
-            const div = document.createElement("div");
-            div.className = "user-listing";
-            
-            listingContainer.appendChild(div);
-          });
-        }
-      }
+if (sellerListings.length === 0) {
+  listingContainer.innerHTML = "<div class='placeholder'>You haven’t added any listings yet.</div>";
+} else {
+  sellerListings.forEach(listing => {
+    const div = document.createElement("div");
+    div.className = "user-listing";
 
-      renderListings();
+    div.innerHTML = `
+      <h3>${listing.title}</h3>
+      <p><strong>Price:</strong> $${listing.price}</p>
+      <p><strong>Status:</strong> ${listing.status}</p>
+      ${listing.image ? `<img src="${listing.image}" style="max-width:100%;height:auto;margin-top:10px;" />` : ""}
+
+      <button onclick="editListing('${listing.id}')">✏️ Edit</button>
+      <button onclick="deleteListing('${listing.id}')">🗑️ Delete</button>
+    `;
+
+    listingContainer.appendChild(div);
+  });
+}
+}
+
+
+  
 
       document.getElementById("newListingForm").addEventListener("submit", function(e) {
         e.preventDefault();
