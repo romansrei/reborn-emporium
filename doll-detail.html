@@ -2,177 +2,119 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Doll Details</title>
-  <link rel="stylesheet" href="/styles/main.css" />
-</head>
-<body>
-  <header>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/nurseries/">Nurseries</a>
-      <a href="/contact-seller.html">Contact</a>
-    </nav>
-  </header>
-
-  <main class="doll-details">
-    <section class="doll-info">
-      <img src="/images/doll-placeholder.jpg" alt="Doll Image" class="doll-image" />
-      <div class="doll-meta">
-        <h1>Doll Name Placeholder</h1>
-        <p><strong>Artist:</strong> Jane Doe</p>
-        <p><strong>Material:</strong> Silicone</p>
-        <p><strong>Eyes:</strong> Closed</p>
-        <p><strong>Hair:</strong> Rooted</p>
-        <p><strong>Status:</strong> Sold</p>
-
-        <!-- Inquiry Button (disabled for sold) -->
-        <button class="btn btn-disabled" disabled>
-          Inquire (Sold)
-        </button>
-
-        <!-- Contact Seller Button -->
-        <button id="contactSellerBtn" class="btn btn-outline" onclick="openContactForm()">
-          Contact Seller
-        </button>
-      </div>
-    </section>
-  </main>
-
-  <!-- Contact Seller Modal -->
-  <div id="contactSellerModal" class="modal hidden">
-    <div class="modal-content">
-      <span class="close" onclick="closeContactForm()">&times;</span>
-      <h2>Contact the Artist</h2>
-      <form id="contactForm">
-        <input type="text" id="buyerName" placeholder="Your Name" required />
-        <input type="email" id="buyerEmail" placeholder="Your Email" required />
-        <textarea id="buyerMessage" placeholder="Your Message to the Artist" required></textarea>
-        <button type="submit" class="btn">Send Message</button>
-      </form>
-    </div>
-  </div>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doll Detail – Reborn Emporium</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    .doll-details {
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    header {
+      background-color: #fff;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #ddd;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    main {
       max-width: 800px;
       margin: 2rem auto;
       padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
     }
-
-    .doll-info {
-      display: flex;
-      gap: 2rem;
-    }
-
-    .doll-image {
-      width: 300px;
-      border-radius: 1rem;
-    }
-
-    .doll-meta {
-      flex-grow: 1;
-    }
-
-    .btn {
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 0.5rem;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-
-    .btn-outline {
-      background: none;
-      border: 2px solid #444;
-      color: #444;
-    }
-
-    .btn-outline:hover {
-      background: #f4f4f4;
-    }
-
-    .btn-disabled {
-      background: #ccc;
-      color: #666;
-      cursor: not-allowed;
-    }
-
-    /* Modal Styles */
-    .modal {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    .modal-content {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 1rem;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
-      position: relative;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .modal .close {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
-    #contactForm input,
-    #contactForm textarea {
-      width: 100%;
+    img {
+      max-width: 100%;
+      border-radius: 8px;
       margin-bottom: 1rem;
-      padding: 0.75rem;
-      border: 1px solid #ccc;
-      border-radius: 0.5rem;
-      font-size: 1rem;
     }
-
-    #contactForm button {
-      background: #333;
+    h1 {
+      font-size: 1.75rem;
+      margin-bottom: 0.5rem;
+    }
+    p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    button {
+      margin-right: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      background-color: #d89c9c;
       color: white;
-      padding: 0.75rem 1.5rem;
       border: none;
-      border-radius: 0.5rem;
+      border-radius: 6px;
       cursor: pointer;
     }
-
-    #contactForm button:hover {
-      background: #555;
+    button:hover {
+      background-color: #c88484;
+    }
+    .status {
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .placeholder {
+      text-align: center;
+      color: #777;
+      font-style: italic;
+      margin-top: 2rem;
     }
   </style>
+</head>
+<body>
+  <header>Reborn Emporium</header>
+  <main>
+    <div id="content"></div>
+  </main>
 
   <script>
-    function openContactForm() {
-      document.getElementById('contactSellerModal').classList.remove('hidden');
+    const params = new URLSearchParams(window.location.search);
+    const listingId = params.get("id");
+    const listings = JSON.parse(localStorage.getItem("listings") || "[]");
+    const listing = listings.find(l => l.id === listingId);
+    const container = document.getElementById("content");
+
+    if (!listing) {
+      container.innerHTML = '<div class="placeholder">Listing not found.</div>';
+    } else {
+      const isSold = listing.status === "Sold";
+      container.innerHTML = `
+        ${listing.image ? `<img src="${listing.image}" alt="${listing.title}">` : ""}
+        <h1>${listing.title}</h1>
+        <p class="status">${listing.status}</p>
+        <p><strong>Price:</strong> $${listing.price}</p>
+        <p><strong>Description:</strong> Lifelike details, hand-rooted hair, and carefully painted features make this doll truly unique.</p>
+        ${!isSold ? `<button onclick="inquire('${listing.title}')">Inquire</button>` : ""}
+        <button onclick="saveWishlist('${listing.title}')">♡ Save to Wishlist</button>
+      `;
     }
 
-    function closeContactForm() {
-      document.getElementById('contactSellerModal').classList.add('hidden');
+    function inquire(dollName) {
+      const message = prompt(`Send a message about ${dollName}:`);
+      if (message && message.trim() !== "") {
+        const inquiries = JSON.parse(localStorage.getItem("inquiries") || "[]");
+        inquiries.push({ doll: dollName, message });
+        localStorage.setItem("inquiries", JSON.stringify(inquiries));
+        alert("Your message has been saved (placeholder).");
+      }
     }
 
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      alert('Message sent to seller! (This is a placeholder)');
-      closeContactForm();
-    });
+    function saveWishlist(dollName) {
+      let wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+      if (!wishlist.includes(dollName)) {
+        wishlist.push(dollName);
+        localStorage.setItem("wishlist", JSON.stringify(wishlist));
+        alert(`${dollName} has been added to your wishlist.`);
+      } else {
+        alert(`${dollName} is already in your wishlist.`);
+      }
+    }
   </script>
 </body>
 </html>
