@@ -200,6 +200,8 @@
   </footer>
 
   <script>
+    let currentImageData = "";
+
     window.onload = function () {
       // 🟦 BEGIN: Image Upload Preview & Save
 
@@ -207,7 +209,7 @@
 // 🟪 BEGIN: Image Upload Preview with Size Limit
 const imageInput = document.getElementById("image");
 const imagePreview = document.getElementById("imagePreview");
-let currentImageData = "";
+
 
 imageInput.addEventListener("change", function () {
   const file = imageInput.files[0];
@@ -347,6 +349,8 @@ listings[index].image = currentImageData || listings[index].image || "";
         localStorage.setItem("listings", JSON.stringify(listings));
         renderListings();
         e.target.reset();
+        imagePreview.style.display = "none";
+
         document.getElementById("formTitle").textContent = "Add New Listing";
       });
     
