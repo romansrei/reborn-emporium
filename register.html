@@ -2,158 +2,101 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Register – Reborn Emporium</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register as a Seller – Reborn Emporium</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
     body {
       font-family: 'Inter', sans-serif;
       background-color: #f8f9fa;
-      color: #333;
-      line-height: 1.6;
-    }
-
-    header {
-      background-color: #ffffff;
-      border-bottom: 1px solid #ddd;
-      padding: 1.2rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #444;
-    }
-    nav a {
-      margin-left: 1.5rem;
-      text-decoration: none;
-      color: #555;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-    nav a:hover {
-      color: #000;
-    }
-
-    main {
-      max-width: 400px;
-      margin: 4rem auto;
-      background: #ffffff;
       padding: 2rem;
-      border: 1px solid #ddd;
+    }
+    main {
+      max-width: 600px;
+      margin: 2rem auto;
+      background-color: #fff;
+      padding: 2rem;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.04);
     }
-
     h1 {
-      text-align: center;
       font-size: 1.5rem;
       margin-bottom: 1.5rem;
+      text-align: center;
     }
-
-    form {
-      display: flex;
-      flex-direction: column;
-    }
-
-    label {
-      font-weight: 500;
-      margin-bottom: 0.25rem;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="password"] {
-      padding: 0.6rem;
+    input, textarea {
+      width: 100%;
+      padding: 0.75rem;
       margin-bottom: 1rem;
       border: 1px solid #ccc;
-      border-radius: 6px;
+      border-radius: 4px;
       font-size: 1rem;
     }
-
     button {
-      padding: 0.75rem;
-      font-size: 1rem;
-      background-color: #007b83;
-      color: white;
+      background-color: #444;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
       border: none;
-      border-radius: 6px;
+      border-radius: 4px;
       cursor: pointer;
-      transition: background-color 0.2s;
+      font-size: 1rem;
     }
-
     button:hover {
-      background-color: #006671;
+      background-color: #000;
     }
-
-    .switch-link {
+    .success {
       text-align: center;
+      color: green;
       margin-top: 1rem;
-      font-size: 0.95rem;
-    }
-
-    .switch-link a {
-      color: #007b83;
-      text-decoration: none;
-    }
-
-    .switch-link a:hover {
-      text-decoration: underline;
-    }
-
-    footer {
-      margin-top: 4rem;
-      padding: 2rem;
-      text-align: center;
-      color: #aaa;
-      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">Reborn Emporium</div>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/register.html">Register</a>
-      <a href="/login.html">Login</a>
-      <a href="/dashboard.html">Dashboard</a>
-      <a href="/nurseries.html">Nursery Directory</a>
-    </nav>
-  </header>
-
   <main>
-    <h1>Create Your Account</h1>
-    <form>
-      <label for="fullname">Full Name</label>
-      <input type="text" id="fullname" name="fullname" required />
-
-      <label for="email">Email Address</label>
-      <input type="email" id="email" name="email" required />
-
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" required />
-
-      <label for="confirm-password">Confirm Password</label>
-      <input type="password" id="confirm-password" name="confirm-password" required />
-
+    <h1>Register as a Seller</h1>
+    <form id="registerForm">
+      <input type="text" id="name" placeholder="Your Name / Nursery Name" required />
+      <input type="email" id="email" placeholder="Email Address" required />
+      <input type="text" id="location" placeholder="Location (e.g. Texas, USA)" />
+      <textarea id="bio" placeholder="Short bio or about section"></textarea>
       <button type="submit">Register</button>
+      <div class="success" id="successMsg" style="display:none;">Registration submitted! Redirecting...</div>
     </form>
-
-    <div class="switch-link">
-      Already have an account? <a href="/login.html">Log in here</a>
-    </div>
   </main>
 
-  <footer>
-    &copy; 2025 Reborn Emporium. All rights reserved.
-  </footer>
+  <script>
+    const form = document.getElementById("registerForm");
+    const successMsg = document.getElementById("successMsg");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const location = document.getElementById("location").value.trim();
+      const bio = document.getElementById("bio").value.trim();
+
+      const sellers = JSON.parse(localStorage.getItem("sellers") || "[]");
+
+      const newSeller = {
+        id: Date.now().toString(),
+        name,
+        email,
+        location,
+        bio,
+        status: "pending",
+        tier: "free"
+      };
+
+      sellers.push(newSeller);
+      localStorage.setItem("sellers", JSON.stringify(sellers));
+      localStorage.setItem("loggedInSeller", JSON.stringify(newSeller));
+
+      successMsg.style.display = "block";
+      setTimeout(() => {
+        window.location.href = "/dashboard.html";
+      }, 1500);
+    });
+  </script>
 </body>
 </html>
