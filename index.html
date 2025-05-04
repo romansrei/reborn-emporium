@@ -33,9 +33,9 @@
       margin: 2rem auto;
       padding: 0 1rem;
     }
-    h1 {
+    h1, h2 {
       font-size: 1.75rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       color: #4e5c6e;
       text-align: center;
     }
@@ -87,6 +87,15 @@
     .card a:hover {
       text-decoration: underline;
     }
+    .see-more {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .see-more a {
+      text-decoration: none;
+      color: #007b83;
+      font-weight: 500;
+    }
     footer {
       text-align: center;
       padding: 2rem;
@@ -121,7 +130,8 @@
       <label><input type="checkbox" class="filter" value="pets"> Pet-Free</label>
     </div>
 
-    <div class="grid" id="listingGrid"></div>
+    <div class="grid" id="justListedGrid"></div>
+    <div class="see-more"><a href="just-listed.html">See more →</a></div>
   </div>
 
   <footer>
@@ -130,15 +140,16 @@
 
   <script>
     const listings = JSON.parse(localStorage.getItem("listings") || "[]");
-    const container = document.getElementById("listingGrid");
+    const justListedGrid = document.getElementById("justListedGrid");
     const filters = document.querySelectorAll(".filter");
 
-    filters.forEach(f => f.addEventListener("change", render));
+    filters.forEach(f => f.addEventListener("change", renderJustListed));
 
-    function render() {
+    function renderJustListed() {
       const active = Array.from(filters).filter(cb => cb.checked).map(cb => cb.value);
-      const latest = listings.slice(-30).reverse();
-      container.innerHTML = "";
+      const humanListings = listings.filter(l => l.category?.toLowerCase() === "human");
+      const latest = humanListings.slice(-30).reverse();
+      justListedGrid.innerHTML = "";
 
       const filtered = latest.filter(l => {
         return active.every(tag => {
@@ -147,12 +158,7 @@
         });
       });
 
-      if (filtered.length === 0) {
-        container.innerHTML = "<p>No listings found.</p>";
-        return;
-      }
-
-      filtered.slice(0, 6).forEach(listing => {
+      filtered.slice(0, 16).forEach(listing => {
         const card = document.createElement("div");
         card.className = "card";
         card.innerHTML = `
@@ -161,11 +167,11 @@
           <p>$${listing.price}</p>
           <a href="doll-detail.html?id=${listing.id}">View Details</a>
         `;
-        container.appendChild(card);
+        justListedGrid.appendChild(card);
       });
     }
 
-    render();
+    renderJustListed();
   </script>
 </body>
 </html>
