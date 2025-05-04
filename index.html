@@ -134,6 +134,12 @@
     <div class="see-more"><a href="just-listed.html">See more →</a></div>
   </div>
 
+  <div class="section">
+    <h2>Alternative</h2>
+    <div class="grid" id="alternativeGrid"></div>
+    <div class="see-more"><a href="alternative.html">See more →</a></div>
+  </div>
+
   <footer>
     &copy; 2025 Reborn Emporium. All rights reserved.
   </footer>
@@ -141,6 +147,7 @@
   <script>
     const listings = JSON.parse(localStorage.getItem("listings") || "[]");
     const justListedGrid = document.getElementById("justListedGrid");
+    const alternativeGrid = document.getElementById("alternativeGrid");
     const filters = document.querySelectorAll(".filter");
 
     filters.forEach(f => f.addEventListener("change", renderJustListed));
@@ -171,7 +178,25 @@
       });
     }
 
+    function renderAlternative() {
+      const altListings = listings.filter(l => l.category?.toLowerCase() === "alternative").slice(-10).reverse();
+      alternativeGrid.innerHTML = "";
+
+      altListings.slice(0, 4).forEach(listing => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          ${listing.status?.toLowerCase() === 'sold' ? '<div class="badge">SOLD</div>' : ''}
+          <h3>${listing.title}</h3>
+          <p>$${listing.price}</p>
+          <a href="doll-detail.html?id=${listing.id}">View Details</a>
+        `;
+        alternativeGrid.appendChild(card);
+      });
+    }
+
     renderJustListed();
+    renderAlternative();
   </script>
 </body>
 </html>
