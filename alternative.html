@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alternative Dolls – Reborn Emporium</title>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    header, footer {
+      background-color: #ffffff;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #ddd;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #4e5c6e;
+    }
+    nav a {
+      margin-left: 1.5rem;
+      text-decoration: none;
+      color: #555;
+      font-weight: 500;
+    }
+    .section {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    h1 {
+      font-size: 1.75rem;
+      margin-bottom: 1.5rem;
+      color: #4e5c6e;
+      text-align: center;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+      padding: 1rem;
+    }
+    .card h3 {
+      margin-top: 0;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      font-size: 0.75rem;
+      background-color: #d89c9c;
+      color: white;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+    .card a {
+      display: inline-block;
+      margin-top: 0.75rem;
+      color: #007b83;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .card a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.85rem;
+      color: #aaa;
+      margin-top: 4rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Reborn Emporium</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/register.html">Register</a>
+      <a href="/login.html">Login</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/nurseries.html">Nursery Directory</a>
+    </nav>
+  </header>
+
+  <div class="section">
+    <h1>Alternative Dolls</h1>
+    <div class="grid" id="listingGrid"></div>
+  </div>
+
+  <footer>
+    &copy; 2025 Reborn Emporium. All rights reserved.
+  </footer>
+
+  <script>
+    const listings = JSON.parse(localStorage.getItem("listings") || "[]");
+    const container = document.getElementById("listingGrid");
+    const altListings = listings.filter(l => l.category?.toLowerCase() === "alternative").slice().reverse();
+
+    if (altListings.length === 0) {
+      container.innerHTML = "<p>No alternative dolls available at this time.</p>";
+    } else {
+      altListings.forEach(listing => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          ${listing.status?.toLowerCase() === 'sold' ? '<div class="badge">SOLD</div>' : ''}
+          <h3>${listing.title}</h3>
+          <p>$${listing.price}</p>
+          <a href="doll-detail.html?id=${listing.id}">View Details</a>
+        `;
+        container.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>
