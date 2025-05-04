@@ -39,6 +39,21 @@
       color: #4e5c6e;
       text-align: center;
     }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    .filters label {
+      background: #fff;
+      padding: 0.4rem 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -95,6 +110,17 @@
 
   <div class="section">
     <h1>Just Listed</h1>
+
+    <div class="filters">
+      <label><input type="checkbox" class="filter" value="awake"> Awake</label>
+      <label><input type="checkbox" class="filter" value="asleep"> Asleep</label>
+      <label><input type="checkbox" class="filter" value="vinyl"> Vinyl</label>
+      <label><input type="checkbox" class="filter" value="silicone"> Silicone</label>
+      <label><input type="checkbox" class="filter" value="cuddle"> Cuddle</label>
+      <label><input type="checkbox" class="filter" value="smoking"> Non-Smoking</label>
+      <label><input type="checkbox" class="filter" value="pets"> Pet-Free</label>
+    </div>
+
     <div class="grid" id="listingGrid"></div>
   </div>
 
@@ -105,13 +131,28 @@
   <script>
     const listings = JSON.parse(localStorage.getItem("listings") || "[]");
     const container = document.getElementById("listingGrid");
+    const filters = document.querySelectorAll(".filter");
 
-    const latest = listings.slice(-6).reverse(); // show most recent 6
+    filters.forEach(f => f.addEventListener("change", render));
 
-    if (latest.length === 0) {
-      container.innerHTML = "<p>No listings found.</p>";
-    } else {
-      latest.forEach(listing => {
+    function render() {
+      const active = Array.from(filters).filter(cb => cb.checked).map(cb => cb.value);
+      const latest = listings.slice(-30).reverse();
+      container.innerHTML = "";
+
+      const filtered = latest.filter(l => {
+        return active.every(tag => {
+          const text = (l.title + l.description + l.material + l.eyes + l.awakeAsleep + l.notes + l.status).toLowerCase();
+          return text.includes(tag);
+        });
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = "<p>No listings found.</p>";
+        return;
+      }
+
+      filtered.slice(0, 6).forEach(listing => {
         const card = document.createElement("div");
         card.className = "card";
         card.innerHTML = `
@@ -123,6 +164,8 @@
         container.appendChild(card);
       });
     }
+
+    render();
   </script>
 </body>
 </html>
