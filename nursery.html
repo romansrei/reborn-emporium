@@ -49,7 +49,8 @@
     const listings = JSON.parse(localStorage.getItem("listings") || "[]");
     const sellers = JSON.parse(localStorage.getItem("sellers") || "[]");
 
-    const seller = sellers.find(s => s.id == sellerId);
+    const seller = sellers.find(s => s.id.toString() === sellerId);
+
     const sellerListings = listings.filter(l => l.sellerId == sellerId);
 
     document.getElementById("sellerDisplayName").textContent = seller?.name || "Unknown Seller";
