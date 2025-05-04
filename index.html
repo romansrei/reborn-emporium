@@ -140,6 +140,11 @@
     <div class="see-more"><a href="alternative.html">See more →</a></div>
   </div>
 
+  <div class="section">
+    <h2>For Adoption</h2>
+    <div class="grid" id="adoptionGrid"></div>
+  </div>
+
   <footer>
     &copy; 2025 Reborn Emporium. All rights reserved.
   </footer>
@@ -148,6 +153,7 @@
     const listings = JSON.parse(localStorage.getItem("listings") || "[]");
     const justListedGrid = document.getElementById("justListedGrid");
     const alternativeGrid = document.getElementById("alternativeGrid");
+    const adoptionGrid = document.getElementById("adoptionGrid");
     const filters = document.querySelectorAll(".filter");
 
     filters.forEach(f => f.addEventListener("change", renderJustListed));
@@ -195,8 +201,26 @@
       });
     }
 
+    function renderForAdoption() {
+      const unsold = listings.filter(l => l.category?.toLowerCase() === "human" && l.status?.toLowerCase() === "available");
+      const shuffled = unsold.sort(() => Math.random() - 0.5);
+      adoptionGrid.innerHTML = "";
+
+      shuffled.slice(0, 60).forEach(listing => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <h3>${listing.title}</h3>
+          <p>$${listing.price}</p>
+          <a href="doll-detail.html?id=${listing.id}">View Details</a>
+        `;
+        adoptionGrid.appendChild(card);
+      });
+    }
+
     renderJustListed();
     renderAlternative();
+    renderForAdoption();
   </script>
 </body>
 </html>
