@@ -1,199 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reborn Emporium – Just Listed</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reborn Emporium – Home</title>
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f5f3ef;
-      color: #333;
+      font-family: sans-serif;
+      background-color: #f8f9fa;
       margin: 0;
-      padding: 0;
-    }
-    header, footer {
-      background-color: #ffffff;
-      padding: 1rem 2rem;
-      border-bottom: 1px solid #ddd;
-    }
-    .logo {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #4e5c6e;
-    }
-    nav a {
-      margin-left: 1.5rem;
-      text-decoration: none;
-      color: #555;
-      font-weight: 500;
-    }
-    .section {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 1rem;
+      padding: 2rem;
     }
     h1 {
-      font-size: 1.75rem;
-      margin-bottom: 1.5rem;
-      color: #4e5c6e;
       text-align: center;
-    }
-    .filters {
       margin-bottom: 2rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
-    }
-    .filters label {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      background: #fff;
-      padding: 0.4rem 0.8rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.95rem;
-    }
-    .search-bar {
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-    .search-bar input {
-      padding: 0.6rem 1rem;
-      width: 80%;
-      max-width: 400px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
     }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 1.5rem;
     }
     .card {
-      background: #fff;
-      padding: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      text-align: center;
-    }
-    .card img {
-      width: 100%;
-      max-width: 200px;
+      background: white;
       border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+      padding: 1rem;
     }
-    .card h2 {
-      font-size: 1.1rem;
-      margin: 0.5rem 0 0.25rem;
+    .card h3 {
+      margin-top: 0;
     }
-    .card p {
-      font-size: 0.95rem;
-      color: #666;
-      margin: 0.25rem 0;
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      font-size: 0.75rem;
+      background-color: #d89c9c;
+      color: white;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
     }
     .card a {
       display: inline-block;
-      margin-top: 0.5rem;
-      font-size: 0.9rem;
+      margin-top: 0.75rem;
       color: #007b83;
-      font-weight: 500;
       text-decoration: none;
+      font-weight: 600;
     }
     .card a:hover {
       text-decoration: underline;
     }
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.85rem;
-      color: #aaa;
-      margin-top: 4rem;
-    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">Reborn Emporium</div>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/register.html">Register</a>
-      <a href="/login.html">Login</a>
-      <a href="/dashboard.html">Dashboard</a>
-      <a href="/nurseries.html">Nursery Directory</a>
-    </nav>
-  </header>
-
-  <div class="section">
-    <h1>Just Listed</h1>
-
-    <!-- 🟢 START: Search Bar -->
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search dolls or nurseries..." onkeyup="filterCards()">
-    </div>
-    <!-- 🔴 END: Search Bar -->
-
-    <!-- 🟢 START: Filter Sidebar -->
-    <div class="filters">
-      <label><input type="checkbox" onchange="filterCards()" data-filter="awake"> Awake</label>
-      <label><input type="checkbox" onchange="filterCards()" data-filter="asleep"> Asleep</label>
-      <label><input type="checkbox" onchange="filterCards()" data-filter="vinyl"> Vinyl</label>
-      <label><input type="checkbox" onchange="filterCards()" data-filter="silicone"> Silicone</label>
-    </div>
-    <!-- 🔴 END: Filter Sidebar -->
-
-    <!-- 🟢 START: Homepage Doll Grid -->
-    <div class="grid" id="dollGrid">
-      <div class="card" data-tags="awake vinyl">
-        <img src="https://via.placeholder.com/200x260.png?text=Doll+1" alt="Doll 1">
-        <h2>Doll Name 1</h2>
-        <p>$395</p>
-        <p>Sweet Pea Reborns</p>
-        <a href="doll-detail.html">View Details →</a>
-      </div>
-
-      <div class="card" data-tags="asleep silicone">
-        <img src="https://via.placeholder.com/200x260.png?text=Doll+2" alt="Doll 2">
-        <h2>Doll Name 2</h2>
-        <p>$420</p>
-        <p>Little Lamb Nursery</p>
-        <a href="doll-detail.html">View Details →</a>
-      </div>
-
-      <div class="card" data-tags="awake vinyl">
-        <img src="https://via.placeholder.com/200x260.png?text=Doll+3" alt="Doll 3">
-        <h2>Doll Name 3</h2>
-        <p>$385</p>
-        <p>Rainbow Drops Studio</p>
-        <a href="doll-detail.html">View Details →</a>
-      </div>
-    </div>
-    <!-- 🔴 END: Homepage Doll Grid -->
-  </div>
-
-  <footer>
-    &copy; 2025 Reborn Emporium. All rights reserved.
-  </footer>
+  <h1>Just Listed</h1>
+  <div class="grid" id="listingGrid"></div>
 
   <script>
-    function filterCards() {
-      const input = document.getElementById('searchInput');
-      const filter = input.value.toLowerCase();
-      const checkboxes = document.querySelectorAll('.filters input[type="checkbox"]');
-      const activeTags = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.dataset.filter);
-      const cards = document.querySelectorAll('.card');
+    const listings = JSON.parse(localStorage.getItem("listings") || "[]");
+    const container = document.getElementById("listingGrid");
 
-      cards.forEach(card => {
-        const text = card.textContent.toLowerCase();
-        const cardTags = card.dataset.tags.split(' ');
-        const matchesText = text.includes(filter);
-        const matchesTags = activeTags.every(tag => cardTags.includes(tag));
+    const latest = listings.slice(-6).reverse(); // show most recent 6
 
-        card.style.display = matchesText && matchesTags ? 'block' : 'none';
+    if (latest.length === 0) {
+      container.innerHTML = "<p>No listings found.</p>";
+    } else {
+      latest.forEach(listing => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          ${listing.status?.toLowerCase() === 'sold' ? '<div class="badge">SOLD</div>' : ''}
+          <h3>${listing.title}</h3>
+          <p>$${listing.price}</p>
+          <a href="doll-detail.html?id=${listing.id}">View Details</a>
+        `;
+        container.appendChild(card);
       });
     }
   </script>
