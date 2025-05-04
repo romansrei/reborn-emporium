@@ -64,37 +64,54 @@
       border-radius: 8px;
       box-shadow: 0 0 5px rgba(0,0,0,0.05);
       padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
     }
-    .card h3 {
-      margin-top: 0;
+    .card img {
+      width: 100%;
+      aspect-ratio: 2 / 3;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
     }
     .badge {
       display: inline-block;
-      padding: 0.2rem 0.5rem;
+      padding: 0.25rem 0.5rem;
       font-size: 0.75rem;
       background-color: #d89c9c;
       color: white;
       border-radius: 4px;
       margin-bottom: 0.5rem;
     }
+    .preowned {
+      font-size: 0.75rem;
+      color: #777;
+      margin-top: -0.25rem;
+    }
+    .material {
+      font-size: 0.85rem;
+      color: #555;
+      margin: 0.25rem 0;
+    }
+    .meta {
+      font-size: 0.85rem;
+      color: #777;
+      line-height: 1.2;
+    }
+    .price {
+      font-weight: 600;
+      margin: 0.5rem 0;
+    }
     .card a {
-      display: inline-block;
-      margin-top: 0.75rem;
+      margin-top: 0.5rem;
       color: #007b83;
       text-decoration: none;
       font-weight: 600;
     }
     .card a:hover {
       text-decoration: underline;
-    }
-    .see-more {
-      text-align: center;
-      margin-top: 1rem;
-    }
-    .see-more a {
-      text-decoration: none;
-      color: #007b83;
-      font-weight: 500;
     }
     footer {
       text-align: center;
@@ -119,7 +136,6 @@
 
   <div class="section">
     <h1>Just Listed</h1>
-
     <div class="filters">
       <label><input type="checkbox" class="filter" value="awake"> Awake</label>
       <label><input type="checkbox" class="filter" value="asleep"> Asleep</label>
@@ -129,7 +145,6 @@
       <label><input type="checkbox" class="filter" value="smoking"> Non-Smoking</label>
       <label><input type="checkbox" class="filter" value="pets"> Pet-Free</label>
     </div>
-
     <div class="grid" id="justListedGrid"></div>
     <div class="see-more"><a href="just-listed.html">See more →</a></div>
   </div>
@@ -158,6 +173,26 @@
 
     filters.forEach(f => f.addEventListener("change", renderJustListed));
 
+    function createCard(listing) {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        ${listing.image ? `<img src="${listing.image}" alt="${listing.title}" />` : '<img src="https://via.placeholder.com/300x400.png?text=Doll" alt="Placeholder">'}
+        ${listing.status?.toLowerCase() === 'sold' ? '<div class="badge">SOLD</div>' : ''}
+        <h3>${listing.title}</h3>
+        ${listing.preOwned === true ? '<div class="preowned">Pre-Owned</div>' : ''}
+        <div class="material">${listing.material || ''}</div>
+        <div class="meta">
+          Artist: ${listing.artist || 'Unknown'}<br>
+          Seller: ${listing.sellerName || 'Unknown'}<br>
+          ${listing.nurseryName ? `Nursery: ${listing.nurseryName}` : ''}
+        </div>
+        <div class="price">$${listing.price}</div>
+        <a href="doll-detail.html?id=${listing.id}">View Details</a>
+      `;
+      return card;
+    }
+
     function renderJustListed() {
       const active = Array.from(filters).filter(cb => cb.checked).map(cb => cb.value);
       const humanListings = listings.filter(l => l.category?.toLowerCase() === "human");
@@ -172,32 +207,15 @@
       });
 
       filtered.slice(0, 16).forEach(listing => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          ${listing.status?.toLowerCase() === 'sold' ? '<div class="badge">SOLD</div>' : ''}
-          <h3>${listing.title}</h3>
-          <p>$${listing.price}</p>
-          <a href="doll-detail.html?id=${listing.id}">View Details</a>
-        `;
-        justListedGrid.appendChild(card);
+        justListedGrid.appendChild(createCard(listing));
       });
     }
 
     function renderAlternative() {
       const altListings = listings.filter(l => l.category?.toLowerCase() === "alternative").slice(-10).reverse();
       alternativeGrid.innerHTML = "";
-
       altListings.slice(0, 4).forEach(listing => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          ${listing.status?.toLowerCase() === 'sold' ? '<div class="badge">SOLD</div>' : ''}
-          <h3>${listing.title}</h3>
-          <p>$${listing.price}</p>
-          <a href="doll-detail.html?id=${listing.id}">View Details</a>
-        `;
-        alternativeGrid.appendChild(card);
+        alternativeGrid.appendChild(createCard(listing));
       });
     }
 
@@ -205,16 +223,8 @@
       const unsold = listings.filter(l => l.category?.toLowerCase() === "human" && l.status?.toLowerCase() === "available");
       const shuffled = unsold.sort(() => Math.random() - 0.5);
       adoptionGrid.innerHTML = "";
-
       shuffled.slice(0, 60).forEach(listing => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          <h3>${listing.title}</h3>
-          <p>$${listing.price}</p>
-          <a href="doll-detail.html?id=${listing.id}">View Details</a>
-        `;
-        adoptionGrid.appendChild(card);
+        adoptionGrid.appendChild(createCard(listing));
       });
     }
 
