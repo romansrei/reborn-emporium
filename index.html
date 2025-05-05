@@ -1,71 +1,239 @@
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const listings = JSON.parse(localStorage.getItem("listings") || "[]");
-    const justListedGrid = document.getElementById("justListedGrid");
-    const alternativeGrid = document.getElementById("alternativeGrid");
-    const adoptionGrid = document.getElementById("adoptionGrid");
-    const filters = document.querySelectorAll(".filter");
-
-    filters.forEach(f => f.addEventListener("change", renderJustListed));
-
-    function createCard(listing) {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        ${listing.image ? `<img src="${listing.image}" alt="${listing.title}" />` : '<img src="https://via.placeholder.com/300x400.png?text=Doll" alt="Placeholder">'}
-        ${listing.status?.toLowerCase() === 'sold' ? '<div class="badge">SOLD</div>' : ''}
-        <h3>${listing.title}</h3>
-        ${listing.preOwned === true ? '<div class="preowned">Pre-Owned</div>' : ''}
-        <div class="material">${listing.material || ''}</div>
-        <div class="meta">
-          Artist: ${listing.artist || 'Unknown'}<br>
-          Seller: ${listing.sellerName || 'Unknown'}<br>
-          ${listing.nurseryName ? `Nursery: ${listing.nurseryName}` : ''}
-        </div>
-        <div class="price">$${listing.price}</div>
-        <a href="doll-detail.html?id=${listing.id}">View Details</a>
-      `;
-      return card;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reborn Emporium – Home</title>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      margin: 0;
+      padding: 0;
     }
+    header, footer {
+      background-color: #ffffff;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #ddd;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #4e5c6e;
+    }
+    nav a {
+      margin-left: 1.5rem;
+      text-decoration: none;
+      color: #555;
+      font-weight: 500;
+    }
+    .section {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    h1, h2 {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+      color: #4e5c6e;
+      text-align: center;
+    }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    .filters label {
+      background: #fff;
+      padding: 0.4rem 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .card img {
+      width: 100%;
+      aspect-ratio: 2 / 3;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      background-color: #d89c9c;
+      color: white;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+    .preowned {
+      font-size: 0.75rem;
+      color: #777;
+      margin-top: -0.25rem;
+    }
+    .material {
+      font-size: 0.85rem;
+      color: #555;
+      margin: 0.25rem 0;
+    }
+    .meta {
+      font-size: 0.85rem;
+      color: #777;
+      line-height: 1.2;
+    }
+    .price {
+      font-weight: 600;
+      margin: 0.5rem 0;
+    }
+    .card a {
+      margin-top: 0.5rem;
+      color: #007b83;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .card a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.85rem;
+      color: #aaa;
+      margin-top: 4rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Reborn Emporium</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/register.html">Register</a>
+      <a href="/login.html">Login</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/nurseries.html">Nursery Directory</a>
+    </nav>
+  </header>
 
-    function renderJustListed() {
-      console.log("Rendering Just Listed...");
-      const active = Array.from(filters).filter(cb => cb.checked).map(cb => cb.value);
-      const humanListings = listings.filter(l => l.category?.toLowerCase() === "human");
-      const latest = humanListings.slice(-30).reverse();
-      justListedGrid.innerHTML = "";
+  <div class="section">
+    <h1>Just Listed</h1>
+    <div class="filters">
+      <label><input type="checkbox" class="filter" value="awake"> Awake</label>
+      <label><input type="checkbox" class="filter" value="asleep"> Asleep</label>
+      <label><input type="checkbox" class="filter" value="vinyl"> Vinyl</label>
+      <label><input type="checkbox" class="filter" value="silicone"> Silicone</label>
+      <label><input type="checkbox" class="filter" value="cuddle"> Cuddle</label>
+      <label><input type="checkbox" class="filter" value="smoking"> Non-Smoking</label>
+      <label><input type="checkbox" class="filter" value="pets"> Pet-Free</label>
+    </div>
+    <div class="grid" id="justListedGrid"></div>
+    <div class="see-more"><a href="just-listed.html">See more →</a></div>
+  </div>
 
-      const filtered = latest.filter(l => {
-        return active.every(tag => {
-          const text = (l.title + l.description + l.material + l.eyes + l.awakeAsleep + l.notes + l.status).toLowerCase();
-          return text.includes(tag);
+  <div class="section">
+    <h2>Alternative</h2>
+    <div class="grid" id="alternativeGrid"></div>
+    <div class="see-more"><a href="alternative.html">See more →</a></div>
+  </div>
+
+  <div class="section">
+    <h2>For Adoption</h2>
+    <div class="grid" id="adoptionGrid"></div>
+  </div>
+
+  <footer>
+    &copy; 2025 Reborn Emporium. All rights reserved.
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const listings = JSON.parse(localStorage.getItem("listings") || "[]");
+      const justListedGrid = document.getElementById("justListedGrid");
+      const alternativeGrid = document.getElementById("alternativeGrid");
+      const adoptionGrid = document.getElementById("adoptionGrid");
+      const filters = document.querySelectorAll(".filter");
+
+      filters.forEach(f => f.addEventListener("change", renderJustListed));
+
+      function createCard(listing) {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          ${listing.image ? `<img src="${listing.image}" alt="${listing.title}" />` : '<img src="https://via.placeholder.com/300x400.png?text=Doll" alt="Placeholder">'}
+          ${listing.status?.toLowerCase() === 'sold' ? '<div class="badge">SOLD</div>' : ''}
+          <h3>${listing.title}</h3>
+          ${listing.preOwned === true ? '<div class="preowned">Pre-Owned</div>' : ''}
+          <div class="material">${listing.material || ''}</div>
+          <div class="meta">
+            Artist: ${listing.artist || 'Unknown'}<br>
+            Seller: ${listing.sellerName || 'Unknown'}<br>
+            ${listing.nurseryName ? `Nursery: ${listing.nurseryName}` : ''}
+          </div>
+          <div class="price">$${listing.price}</div>
+          <a href="doll-detail.html?id=${listing.id}">View Details</a>
+        `;
+        return card;
+      }
+
+      function renderJustListed() {
+        console.log("Rendering Just Listed...");
+        const active = Array.from(filters).filter(cb => cb.checked).map(cb => cb.value);
+        const humanListings = listings.filter(l => l.category?.toLowerCase() === "human");
+        const latest = humanListings.slice(-30).reverse();
+        justListedGrid.innerHTML = "";
+
+        const filtered = latest.filter(l => {
+          return active.every(tag => {
+            const text = (l.title + l.description + l.material + l.eyes + l.awakeAsleep + l.notes + l.status).toLowerCase();
+            return text.includes(tag);
+          });
         });
-      });
 
-      filtered.slice(0, 16).forEach(listing => {
-        justListedGrid.appendChild(createCard(listing));
-      });
-    }
+        filtered.slice(0, 16).forEach(listing => {
+          justListedGrid.appendChild(createCard(listing));
+        });
+      }
 
-    function renderAlternative() {
-      const altListings = listings.filter(l => l.category?.toLowerCase() === "alternative").slice(-10).reverse();
-      alternativeGrid.innerHTML = "";
-      altListings.slice(0, 4).forEach(listing => {
-        alternativeGrid.appendChild(createCard(listing));
-      });
-    }
+      function renderAlternative() {
+        const altListings = listings.filter(l => l.category?.toLowerCase() === "alternative").slice(-10).reverse();
+        alternativeGrid.innerHTML = "";
+        altListings.slice(0, 4).forEach(listing => {
+          alternativeGrid.appendChild(createCard(listing));
+        });
+      }
 
-    function renderForAdoption() {
-      const unsold = listings.filter(l => l.category?.toLowerCase() === "human" && l.status?.toLowerCase() === "available");
-      const shuffled = unsold.sort(() => Math.random() - 0.5);
-      adoptionGrid.innerHTML = "";
-      shuffled.slice(0, 60).forEach(listing => {
-        adoptionGrid.appendChild(createCard(listing));
-      });
-    }
+      function renderForAdoption() {
+        const unsold = listings.filter(l => l.category?.toLowerCase() === "human" && l.status?.toLowerCase() === "available");
+        const shuffled = unsold.sort(() => Math.random() - 0.5);
+        adoptionGrid.innerHTML = "";
+        shuffled.slice(0, 60).forEach(listing => {
+          adoptionGrid.appendChild(createCard(listing));
+        });
+      }
 
-    renderJustListed();
-    renderAlternative();
-    renderForAdoption();
-  });
-</script>
+      renderJustListed();
+      renderAlternative();
+      renderForAdoption();
+    });
+  </script>
+</body>
+</html>
