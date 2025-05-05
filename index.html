@@ -194,6 +194,8 @@
     }
 
     function renderJustListed() {
+      console.log("Rendering Just Listed...");
+
       const active = Array.from(filters).filter(cb => cb.checked).map(cb => cb.value);
       const humanListings = listings.filter(l => l.category?.toLowerCase() === "human");
       const latest = humanListings.slice(-30).reverse();
