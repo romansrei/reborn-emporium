@@ -138,6 +138,13 @@
   </style>
 </head>
 <body>
+  <script>
+    const currentSeller = localStorage.getItem("currentSeller");
+    if (!currentSeller) {
+      window.location.href = "/login.html";
+    }
+  </script>
+  
   <header>
     <div class="logo">Reborn Emporium</div>
     <nav>
