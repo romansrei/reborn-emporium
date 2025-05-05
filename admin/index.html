@@ -161,11 +161,24 @@ function renderSellers() {
 
 function approveSeller(index) {
   const seller = pendingSellers[index];
-  alert(`Approved seller: ${seller.username}`);
+
+  // Get existing approved sellers or start fresh
+  const approved = JSON.parse(localStorage.getItem("approvedSellers") || "[]");
+
+  // Add this one
+  approved.push(seller);
+
+  // Save back to localStorage
+  localStorage.setItem("approvedSellers", JSON.stringify(approved));
+
+  // Remove from pending list
   pendingSellers.splice(index, 1);
   savePendingSellers();
   renderSellers();
+
+  alert(`Approved seller: ${seller.username}`);
 }
+
 
 function rejectSeller(index) {
   const seller = pendingSellers[index];
