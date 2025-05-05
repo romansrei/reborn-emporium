@@ -1,163 +1,138 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Panel – Reborn Emporium</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <title>Admin Dashboard – Reborn Emporium</title>
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #f8f9fa;
+      background-color: #f4f5f7;
       margin: 0;
-      padding: 0;
+      padding: 2rem;
       color: #333;
     }
-    header {
-      background-color: #fff;
-      border-bottom: 1px solid #ddd;
-      padding: 1rem 2rem;
-      font-size: 1.5rem;
-      font-weight: 600;
+    h1 {
+      text-align: center;
+      color: #4e5c6e;
+      margin-bottom: 2rem;
     }
-    main {
-      max-width: 1000px;
-      margin: 2rem auto;
-      padding: 1rem;
+    section {
       background: #fff;
+      padding: 1.5rem;
       border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     h2 {
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-      font-size: 1.25rem;
-    }
-    .card {
-      border: 1px solid #ddd;
-      padding: 1rem;
-      border-radius: 6px;
+      color: #4e5c6e;
       margin-bottom: 1rem;
     }
-    .card p {
-      margin: 0.25rem 0;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1rem;
     }
-    .card button {
-      margin-right: 0.5rem;
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f0f0f0;
+    }
+    button {
       padding: 0.4rem 0.8rem;
-      background: #444;
-      color: white;
+      margin-right: 0.5rem;
       border: none;
       border-radius: 4px;
+      font-weight: 500;
       cursor: pointer;
     }
-    .card button:hover {
-      background: #000;
-    }
+    .approve { background-color: #4CAF50; color: white; }
+    .reject { background-color: #f44336; color: white; }
+    .edit { background-color: #007b83; color: white; }
+    .delete { background-color: #999; color: white; }
   </style>
 </head>
 <body>
-  <header>Admin Panel</header>
-  <main>
-    <h2>Pending Sellers</h2>
-    <div id="pendingSellers"></div>
+  <h1>Admin Dashboard</h1>
 
-    <h2>Pending Listings</h2>
-    <div id="pendingListings"></div>
-  </main>
+  <section>
+    <h2>Pending Seller Approvals</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Nursery Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="pendingSellers">
+        <!-- Populated dynamically -->
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Listings Moderation</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Seller</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="allListings">
+        <!-- Populated dynamically -->
+      </tbody>
+    </table>
+  </section>
 
   <script>
-    const sellers = JSON.parse(localStorage.getItem("sellers") || "[]");
-    const listings = JSON.parse(localStorage.getItem("listings") || "[]");
+    // Placeholder logic for future dynamic loading
+    const pendingSellers = [
+      { username: "newUser1", email: "user1@example.com", nursery: "Sunshine Dolls" },
+      { username: "newUser2", email: "user2@example.com", nursery: "Little Lullabies" }
+    ];
 
-    const pendingSellersDiv = document.getElementById("pendingSellers");
-    const pendingListingsDiv = document.getElementById("pendingListings");
+    const listings = [
+      { title: "Emma", status: "available", seller: "DollWorld" },
+      { title: "Lucas", status: "sold", seller: "TinyToes" }
+    ];
 
-    function renderPendingSellers() {
-      const pending = sellers.filter(s => s.status === "pending");
-      if (pending.length === 0) {
-        pendingSellersDiv.innerHTML = "<p style='color:#777;'>No pending sellers.</p>";
-        return;
-      }
+    const sellerTable = document.getElementById("pendingSellers");
+    pendingSellers.forEach(s => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${s.username}</td>
+        <td>${s.email}</td>
+        <td>${s.nursery}</td>
+        <td>
+          <button class="approve">Approve</button>
+          <button class="reject">Reject</button>
+        </td>
+      `;
+      sellerTable.appendChild(row);
+    });
 
-      pending.forEach(seller => {
-        const div = document.createElement("div");
-        div.className = "card";
-        div.innerHTML = `
-          <p><strong>${seller.name}</strong></p>
-          <p>Email: ${seller.email}</p>
-          <button onclick="approveSeller('${seller.id}')">Approve</button>
-          <button onclick="rejectSeller('${seller.id}')">Reject</button>
-        `;
-        pendingSellersDiv.appendChild(div);
-      });
-    }
-
-    function renderPendingListings() {
-      const pending = listings.filter(l => l.status === "pending");
-      if (pending.length === 0) {
-        pendingListingsDiv.innerHTML = "<p style='color:#777;'>No pending listings.</p>";
-        return;
-      }
-
-      pending.forEach(listing => {
-        const div = document.createElement("div");
-        div.className = "card";
-        div.innerHTML = `
-          <p><strong>${listing.title}</strong> – $${listing.price}</p>
-          <p>Seller ID: ${listing.sellerId}</p>
-          <button onclick="approveListing('${listing.id}')">Approve</button>
-          <button onclick="rejectListing('${listing.id}')">Reject</button>
-          <button onclick="markStatus('${listing.id}', 'Sold')">Mark Sold</button>
-          <button onclick="markStatus('${listing.id}', 'Reserved')">Mark Reserved</button>
-          <button onclick="markStatus('${listing.id}', 'Available')">Mark Available</button>
-        `;
-        pendingListingsDiv.appendChild(div);
-      });
-    }
-
-    function approveSeller(id) {
-      const index = sellers.findIndex(s => s.id === id);
-      if (index !== -1) {
-        sellers[index].status = "approved";
-        localStorage.setItem("sellers", JSON.stringify(sellers));
-        location.reload();
-      }
-    }
-
-    function rejectSeller(id) {
-      const updated = sellers.filter(s => s.id !== id);
-      localStorage.setItem("sellers", JSON.stringify(updated));
-      location.reload();
-    }
-
-    function approveListing(id) {
-      const index = listings.findIndex(l => l.id === id);
-      if (index !== -1) {
-        listings[index].status = "Available";
-        localStorage.setItem("listings", JSON.stringify(listings));
-        location.reload();
-      }
-    }
-
-    function rejectListing(id) {
-      const updated = listings.filter(l => l.id !== id);
-      localStorage.setItem("listings", JSON.stringify(updated));
-      location.reload();
-    }
-
-    function markStatus(id, status) {
-      const index = listings.findIndex(l => l.id === id);
-      if (index !== -1) {
-        listings[index].status = status;
-        localStorage.setItem("listings", JSON.stringify(listings));
-        location.reload();
-      }
-    }
-
-    renderPendingSellers();
-    renderPendingListings();
+    const listingTable = document.getElementById("allListings");
+    listings.forEach(l => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${l.title}</td>
+        <td>${l.status}</td>
+        <td>${l.seller}</td>
+        <td>
+          <button class="edit">Edit</button>
+          <button class="delete">Delete</button>
+        </td>
+      `;
+      listingTable.appendChild(row);
+    });
   </script>
 </body>
 </html>
