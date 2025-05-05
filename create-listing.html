@@ -72,11 +72,20 @@
 
   <script>
     // Check if seller is logged in
-    const currentSeller = JSON.parse(localStorage.getItem("currentSeller"));
-    if (!currentSeller) {
-      alert("You must be logged in to create a listing.");
-      window.location.href = "seller-login.html";
-    }
+    const sellerUsername = localStorage.getItem("currentSeller");
+if (!sellerUsername) {
+  alert("You must be logged in to create a listing.");
+  window.location.href = "/login.html";
+}
+
+const approved = JSON.parse(localStorage.getItem("approvedSellers") || "[]");
+const sellerProfile = approved.find(s => s.username.toLowerCase() === sellerUsername.toLowerCase());
+
+if (!sellerProfile) {
+  alert("Your seller account is not approved.");
+  window.location.href = "/login.html";
+}
+
 
     document.getElementById("listingForm").addEventListener("submit", function (e) {
       e.preventDefault();
@@ -94,13 +103,20 @@
       const listings = JSON.parse(localStorage.getItem("listings") || "[]");
 
       const newListing = {
-        id: Date.now(),
-        sellerEmail: currentSeller.email,
-        dollName,
-        awakeAsleep,
-        material,
-        price
-      };
+  id: Date.now(),
+  title: dollName,
+  awakeAsleep,
+  material,
+  price,
+  status: "available",
+  preOwned: false,
+  image: "", // placeholder for now
+  category: "human", // default, can expand later
+  artist: sellerProfile.username,
+  sellerName: sellerProfile.username,
+  nurseryName: sellerProfile.nursery || ""
+};
+
 
       listings.push(newListing);
       localStorage.setItem("listings", JSON.stringify(listings));
