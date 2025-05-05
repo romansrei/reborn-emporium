@@ -99,10 +99,9 @@
       { username: "newUser2", email: "user2@example.com", nursery: "Little Lullabies" }
     ];
 
-    const listings = [
-      { title: "Emma", status: "available", seller: "DollWorld" },
-      { title: "Lucas", status: "sold", seller: "TinyToes" }
-    ];
+    const listings = JSON.parse(localStorage.getItem("listings") || "[]");
+
+    
 
     const sellerTable = document.getElementById("pendingSellers");
     pendingSellers.forEach(s => {
