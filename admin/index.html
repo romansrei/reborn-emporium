@@ -93,45 +93,47 @@
   </section>
 
   <script>
-    // Placeholder logic for future dynamic loading
-    const pendingSellers = [
-      { username: "newUser1", email: "user1@example.com", nursery: "Sunshine Dolls" },
-      { username: "newUser2", email: "user2@example.com", nursery: "Little Lullabies" }
-    ];
-
-    const listings = JSON.parse(localStorage.getItem("listings") || "[]");
-
-    
-
-    const sellerTable = document.getElementById("pendingSellers");
-    pendingSellers.forEach(s => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${s.username}</td>
-        <td>${s.email}</td>
-        <td>${s.nursery}</td>
-        <td>
-          <button class="approve">Approve</button>
-          <button class="reject">Reject</button>
-        </td>
-      `;
-      sellerTable.appendChild(row);
-    });
-
+    // Load real listings from localStorage
+    let listings = JSON.parse(localStorage.getItem("listings") || "[]");
     const listingTable = document.getElementById("allListings");
-    listings.forEach(l => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${l.title}</td>
-        <td>${l.status}</td>
-        <td>${l.seller}</td>
-        <td>
-          <button class="edit">Edit</button>
-          <button class="delete">Delete</button>
-        </td>
-      `;
-      listingTable.appendChild(row);
-    });
+  
+    function saveListings() {
+      localStorage.setItem("listings", JSON.stringify(listings));
+    }
+  
+    function renderListings() {
+      listingTable.innerHTML = "";
+      listings.forEach((l, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${l.title}</td>
+          <td>${l.status}</td>
+          <td>${l.sellerName || "Unknown"}</td>
+          <td>
+            <button class="edit" onclick="markSold(${index})">Mark Sold</button>
+            <button class="delete" onclick="deleteListing(${index})">Delete</button>
+          </td>
+        `;
+        listingTable.appendChild(row);
+      });
+    }
+  
+    function markSold(index) {
+      listings[index].status = "sold";
+      saveListings();
+      renderListings();
+    }
+  
+    function deleteListing(index) {
+      if (confirm("Are you sure you want to delete this listing?")) {
+        listings.splice(index, 1);
+        saveListings();
+        renderListings();
+      }
+    }
+  
+    renderListings();
   </script>
+  
 </body>
 </html>
