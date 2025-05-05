@@ -2,154 +2,107 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login – Reborn Emporium</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seller Login – Reborn Emporium</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #f8f9fa;
-      color: #333;
-      line-height: 1.6;
-    }
-
-    header {
-      background-color: #ffffff;
-      border-bottom: 1px solid #ddd;
-      padding: 1.2rem 2rem;
+      background-color: #f4f4f4;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
     }
-
-    .logo {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #444;
-    }
-
-    nav a {
-      margin-left: 1.5rem;
-      text-decoration: none;
-      color: #555;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-
-    nav a:hover {
-      color: #000;
-    }
-
-    main {
-      max-width: 400px;
-      margin: 4rem auto;
-      background: #ffffff;
+    .login-box {
+      background: white;
       padding: 2rem;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 100%;
     }
-
     h1 {
       text-align: center;
-      font-size: 1.5rem;
+      color: #4e5c6e;
       margin-bottom: 1.5rem;
     }
-
-    form {
-      display: flex;
-      flex-direction: column;
-    }
-
     label {
+      display: block;
+      margin-bottom: 0.5rem;
       font-weight: 500;
-      margin-bottom: 0.25rem;
     }
-
-    input[type="email"],
-    input[type="password"] {
-      padding: 0.6rem;
+    input[type="text"] {
+      width: 100%;
+      padding: 0.75rem;
       margin-bottom: 1rem;
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 1rem;
     }
-
+    .remember {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+    .remember input {
+      margin-right: 0.5rem;
+    }
     button {
+      width: 100%;
       padding: 0.75rem;
-      font-size: 1rem;
-      background-color: #007b83;
+      background-color: #4e5c6e;
       color: white;
       border: none;
       border-radius: 6px;
+      font-size: 1rem;
       cursor: pointer;
-      transition: background-color 0.2s;
     }
-
-    button:hover {
-      background-color: #006671;
-    }
-
-    .switch-link {
-      text-align: center;
+    .error {
+      color: red;
       margin-top: 1rem;
-      font-size: 0.95rem;
-    }
-
-    .switch-link a {
-      color: #007b83;
-      text-decoration: none;
-    }
-
-    .switch-link a:hover {
-      text-decoration: underline;
-    }
-
-    footer {
-      margin-top: 4rem;
-      padding: 2rem;
       text-align: center;
-      color: #aaa;
-      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">Reborn Emporium</div>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/register.html">Register</a>
-      <a href="/login.html">Login</a>
-      <a href="/dashboard.html">Dashboard</a>
-      <a href="/nurseries.html">Nursery Directory</a>
-    </nav>
-  </header>
+  <div class="login-box">
+    <h1>Seller Login</h1>
+    <label for="username">Approved Username</label>
+    <input type="text" id="username" placeholder="e.g. dollfan123" />
 
-  <main>
-    <h1>Login to Your Account</h1>
-    <form>
-      <label for="email">Email Address</label>
-      <input type="email" id="email" name="email" required />
-
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" required />
-
-      <button type="submit">Log In</button>
-    </form>
-
-    <div class="switch-link">
-      Don't have an account? <a href="/register.html">Register here</a>
+    <div class="remember">
+      <input type="checkbox" id="remember" />
+      <label for="remember">Remember me</label>
     </div>
-  </main>
 
-  <footer>
-    &copy; 2025 Reborn Emporium. All rights reserved.
-  </footer>
+    <button onclick="login()">Log In</button>
+    <div id="error" class="error"></div>
+  </div>
+
+  <script>
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      const remember = document.getElementById("remember").checked;
+      const errorBox = document.getElementById("error");
+      errorBox.textContent = "";
+
+      const approved = JSON.parse(localStorage.getItem("approvedSellers") || "[]");
+      const isApproved = approved.some(s => s.username.toLowerCase() === username.toLowerCase());
+
+      if (!isApproved) {
+        errorBox.textContent = "Username not recognized or not approved.";
+        return;
+      }
+
+      localStorage.setItem("currentSeller", username);
+      if (!remember) {
+        // Set a temporary session (optional future enhancement)
+      }
+
+      window.location.href = "/dashboard.html";
+    }
+  </script>
 </body>
 </html>
