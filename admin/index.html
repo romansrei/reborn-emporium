@@ -119,10 +119,15 @@
     }
   
     function markSold(index) {
-      listings[index].status = "sold";
-      saveListings();
-      renderListings();
-    }
+  listings[index].status = "sold";
+  saveListings();
+
+  // Optional: notify
+  alert(`Listing "${listings[index].title}" marked as sold.`);
+
+  renderListings();
+}
+
   
     function deleteListing(index) {
       if (confirm("Are you sure you want to delete this listing?")) {
