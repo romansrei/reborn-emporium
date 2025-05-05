@@ -1,97 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nursery – Reborn Emporium</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background-color: #f3f4f6;
-      padding: 2rem;
-    }
-    h2 {
-      margin-bottom: 1.5rem;
-    }
-    .section {
-      margin-bottom: 2.5rem;
-    }
-    .listings {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 1.5rem;
-    }
-    .card {
-      background: white;
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.05);
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ seller.name }}'s Nursery</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-gray-50 text-gray-800">
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <!-- Nursery Name -->
+    <h1 class="text-3xl font-bold mb-1">Nursery: {{ seller.name }}</h1>
 
-  <h2>Nursery: <span id="sellerDisplayName"></span></h2>
+    <!-- Available Dolls -->
+    <h2 class="text-xl font-semibold mt-6 mb-4">Available Dolls</h2>
+    {{#if dolls.length}}
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {{#each dolls}}
+          {{#if (eq this.status "Available")}}
+          <div class="bg-white shadow rounded-2xl overflow-hidden">
+            <img src="{{this.image_url}}" alt="{{this.title}}" class="w-full h-72 object-cover">
+            <div class="p-4">
+              <h3 class="text-lg font-semibold">{{this.title}}</h3>
+              {{#if this.is_preowned}}
+                <span class="text-sm text-yellow-600 font-medium">Pre-Owned</span><br>
+              {{/if}}
+              <p class="text-sm text-gray-600">Material: {{this.material}}</p>
+              <p class="text-sm text-gray-600">Artist: {{this.artist_name}}</p>
+              <p class="text-sm text-gray-600">Nursery: {{../seller.name}}</p>
+              <p class="text-lg font-bold mt-1">${{this.price}}</p>
+              <button class="mt-2 px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded inquire-button" data-id="{{this.id}}">
+                Inquire
+              </button>
+            </div>
+          </div>
+          {{/if}}
+        {{/each}}
+      </div>
+    {{else}}
+      <p class="text-gray-500 italic">No listings to show.</p>
+    {{/if}}
 
-  <div class="section">
-    <h3>Available Dolls</h3>
-    <div id="activeListings" class="listings"></div>
+    <!-- Previously Sold Dolls -->
+    <h2 class="text-xl font-semibold mt-10 mb-4">Previously Sold Dolls</h2>
+    {{#if dolls.length}}
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {{#each dolls}}
+          {{#if (eq this.status "Sold")}}
+          <div class="bg-white shadow rounded-2xl overflow-hidden opacity-60">
+            <img src="{{this.image_url}}" alt="{{this.title}}" class="w-full h-72 object-cover">
+            <div class="p-4">
+              <h3 class="text-lg font-semibold">{{this.title}}</h3>
+              {{#if this.is_preowned}}
+                <span class="text-sm text-yellow-600 font-medium">Pre-Owned</span><br>
+              {{/if}}
+              <p class="text-sm text-gray-600">Material: {{this.material}}</p>
+              <p class="text-sm text-gray-600">Artist: {{this.artist_name}}</p>
+              <p class="text-sm text-gray-600">Nursery: {{../seller.name}}</p>
+              <p class="text-lg font-bold mt-1 line-through">${{this.price}}</p>
+            </div>
+          </div>
+          {{/if}}
+        {{/each}}
+      </div>
+    {{else}}
+      <p class="text-gray-500 italic">No sold listings to show.</p>
+    {{/if}}
   </div>
 
-  <div class="section">
-    <h3>Previously Sold Dolls</h3>
-    <div id="soldListings" class="listings"></div>
-  </div>
-
+  <!-- Inquiry JS -->
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const sellerUsername = params.get("seller");
-    const listings = JSON.parse(localStorage.getItem("listings") || "[]");
-    const approvedSellers = JSON.parse(localStorage.getItem("approvedSellers") || "[]");
-  
-    // Find seller profile
-    const sellerProfile = approvedSellers.find(
-      s => s.username.toLowerCase() === sellerUsername?.toLowerCase()
-    );
-  
-    // If seller not approved, show message and stop
-    if (!sellerProfile) {
-      document.body.innerHTML = "<h2>This nursery is not publicly available.</h2>";
-      throw new Error("Seller not approved.");
-    }
-  
-    // Set nursery name in header
-    document.getElementById("sellerDisplayName").textContent = sellerProfile.nursery || sellerProfile.username;
-  
-    // Filter listings
-    const sellerListings = listings.filter(
-      l => l.sellerName?.toLowerCase() === sellerProfile.username.toLowerCase()
-    );
-  
-    const activeListings = sellerListings.filter(l => l.status?.toLowerCase() !== "sold");
-    const soldListings = sellerListings.filter(l => l.status?.toLowerCase() === "sold");
-  
-    function renderListings(targetEl, items) {
-      if (items.length === 0) {
-        targetEl.innerHTML = "<p>No listings to show.</p>";
-        return;
-      }
-  
-      items.forEach(l => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          <strong>${l.title}</strong><br/>
-          ${l.awakeAsleep || ""} • ${l.material || ""} • $${l.price}<br/>
-          <a href="doll-detail.html?id=${l.id}">View Details</a>
-        `;
-        targetEl.appendChild(card);
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.inquire-button').forEach(button => {
+        button.addEventListener('click', () => {
+          const dollId = button.getAttribute('data-id');
+          window.location.href = `/inquire/${dollId}`;
+        });
       });
-    }
-  
-    renderListings(document.getElementById("activeListings"), activeListings);
-    renderListings(document.getElementById("soldListings"), soldListings);
+    });
   </script>
-  
 </body>
 </html>
