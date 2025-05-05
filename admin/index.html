@@ -127,6 +127,57 @@
 
   renderListings();
 }
+// --- SELLER APPROVAL LOGIC ---
+
+let pendingSellers = JSON.parse(localStorage.getItem("pendingSellers") || "[]");
+const sellerTable = document.getElementById("pendingSellers");
+
+function savePendingSellers() {
+  localStorage.setItem("pendingSellers", JSON.stringify(pendingSellers));
+}
+
+function renderSellers() {
+  sellerTable.innerHTML = "";
+
+  if (pendingSellers.length === 0) {
+    sellerTable.innerHTML = "<tr><td colspan='4'>No pending seller applications.</td></tr>";
+    return;
+  }
+
+  pendingSellers.forEach((s, index) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${s.username}</td>
+      <td>${s.email}</td>
+      <td>${s.nursery}</td>
+      <td>
+        <button class="approve" onclick="approveSeller(${index})">Approve</button>
+        <button class="reject" onclick="rejectSeller(${index})">Reject</button>
+      </td>
+    `;
+    sellerTable.appendChild(row);
+  });
+}
+
+function approveSeller(index) {
+  const seller = pendingSellers[index];
+  alert(`Approved seller: ${seller.username}`);
+  pendingSellers.splice(index, 1);
+  savePendingSellers();
+  renderSellers();
+}
+
+function rejectSeller(index) {
+  const seller = pendingSellers[index];
+  if (confirm(`Reject seller: ${seller.username}?`)) {
+    pendingSellers.splice(index, 1);
+    savePendingSellers();
+    renderSellers();
+  }
+}
+
+// --- INIT ---
+renderSellers();
 
   
     function deleteListing(index) {
