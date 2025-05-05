@@ -45,26 +45,39 @@
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const sellerId = params.get("seller");
+    const sellerUsername = params.get("seller");
     const listings = JSON.parse(localStorage.getItem("listings") || "[]");
-    const sellers = JSON.parse(localStorage.getItem("sellers") || "[]");
-
-    const seller = sellers.find(s => s.id.toString() === sellerId);
-
-    const sellerListings = listings.filter(l => l.sellerId == sellerId);
-
-    document.getElementById("sellerDisplayName").textContent = seller?.name || "Unknown Seller";
-
-    const activeListings = sellerListings.filter(l => l.status.toLowerCase() !== "sold");
-    const soldListings = sellerListings.filter(l => l.status.toLowerCase() === "sold");
-
-    const renderListings = (targetEl, listings) => {
-      if (listings.length === 0) {
+    const approvedSellers = JSON.parse(localStorage.getItem("approvedSellers") || "[]");
+  
+    // Find seller profile
+    const sellerProfile = approvedSellers.find(
+      s => s.username.toLowerCase() === sellerUsername?.toLowerCase()
+    );
+  
+    // If seller not approved, show message and stop
+    if (!sellerProfile) {
+      document.body.innerHTML = "<h2>This nursery is not publicly available.</h2>";
+      throw new Error("Seller not approved.");
+    }
+  
+    // Set nursery name in header
+    document.getElementById("sellerDisplayName").textContent = sellerProfile.nursery || sellerProfile.username;
+  
+    // Filter listings
+    const sellerListings = listings.filter(
+      l => l.sellerName?.toLowerCase() === sellerProfile.username.toLowerCase()
+    );
+  
+    const activeListings = sellerListings.filter(l => l.status?.toLowerCase() !== "sold");
+    const soldListings = sellerListings.filter(l => l.status?.toLowerCase() === "sold");
+  
+    function renderListings(targetEl, items) {
+      if (items.length === 0) {
         targetEl.innerHTML = "<p>No listings to show.</p>";
         return;
       }
-
-      listings.forEach(l => {
+  
+      items.forEach(l => {
         const card = document.createElement("div");
         card.className = "card";
         card.innerHTML = `
@@ -74,10 +87,11 @@
         `;
         targetEl.appendChild(card);
       });
-    };
-
+    }
+  
     renderListings(document.getElementById("activeListings"), activeListings);
     renderListings(document.getElementById("soldListings"), soldListings);
   </script>
+  
 </body>
 </html>
