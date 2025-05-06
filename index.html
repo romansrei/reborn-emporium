@@ -35,15 +35,17 @@
           <a href="/listings" class="text-blue-500 hover:underline">See More</a>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-          <!-- Placeholder Listings -->
-          <div class="bg-white rounded-2xl shadow p-2">
-            <img src="https://via.placeholder.com/300x400" alt="Doll" class="rounded mb-2" />
-            <p class="font-semibold">Doll Name</p>
-            <p class="text-sm text-gray-600">by Artist Name</p>
-            <p class="text-sm text-gray-500 italic">Nursery Name</p>
-            <p class="text-pink-600 font-bold mt-1">$500</p>
-          </div>
-          <!-- Repeat 15 more times as placeholder -->
+          <!-- 16 Placeholder Listings -->
+          <!-- prettier-ignore -->
+          ${Array.from({ length: 16 }, (_, i) => `
+            <div class="bg-white rounded-2xl shadow p-2">
+              <img src="https://via.placeholder.com/300x400" alt="Doll" class="rounded mb-2" />
+              <p class="font-semibold">test doll ${i + 1}</p>
+              <p class="text-sm text-gray-600">vinyl</p>
+              <p class="text-sm text-gray-500 italic">Artist: artist${i + 1}</p>
+              <p class="text-sm text-gray-500 italic">Nursery: Nursery ${i + 1}</p>
+              <p class="text-pink-600 font-bold mt-1">$${500 + i * 25}</p>
+            </div>`).join('')}
         </div>
       </section>
 
@@ -55,14 +57,15 @@
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
           <!-- 4 Alt Dolls -->
-          <div class="bg-white rounded-2xl shadow p-2">
-            <img src="https://via.placeholder.com/300x400" alt="Alt Doll" class="rounded mb-2" />
-            <p class="font-semibold">Alt Doll Name</p>
-            <p class="text-sm text-gray-600">by Artist Name</p>
-            <p class="text-sm text-gray-500 italic">Nursery Name</p>
-            <p class="text-pink-600 font-bold mt-1">$600</p>
-          </div>
-          <!-- Repeat 3 more times -->
+          ${Array.from({ length: 4 }, (_, i) => `
+            <div class="bg-white rounded-2xl shadow p-2">
+              <img src="https://via.placeholder.com/300x400" alt="Alt Doll" class="rounded mb-2" />
+              <p class="font-semibold">Alt Doll ${i + 1}</p>
+              <p class="text-sm text-gray-600">fantasy</p>
+              <p class="text-sm text-gray-500 italic">Artist: altartist${i + 1}</p>
+              <p class="text-sm text-gray-500 italic">Nursery: Fantasy Nursery ${i + 1}</p>
+              <p class="text-pink-600 font-bold mt-1">$${700 + i * 30}</p>
+            </div>`).join('')}
         </div>
       </section>
 
@@ -70,15 +73,16 @@
       <section>
         <h2 class="text-2xl font-bold mb-4">For Adoption</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-          <!-- 15+ random unsold dolls -->
-          <div class="bg-white rounded-2xl shadow p-2">
-            <img src="https://via.placeholder.com/300x400" alt="Older Doll" class="rounded mb-2" />
-            <p class="font-semibold">Older Doll Name</p>
-            <p class="text-sm text-gray-600">by Artist Name</p>
-            <p class="text-sm text-gray-500 italic">Nursery Name</p>
-            <p class="text-pink-600 font-bold mt-1">$450</p>
-          </div>
-          <!-- Repeat 59+ times in backend later -->
+          <!-- 60+ Older Unsold Dolls -->
+          ${Array.from({ length: 60 }, (_, i) => `
+            <div class="bg-white rounded-2xl shadow p-2">
+              <img src="https://via.placeholder.com/300x400" alt="Older Doll" class="rounded mb-2" />
+              <p class="font-semibold">Older Doll ${i + 1}</p>
+              <p class="text-sm text-gray-600">vinyl</p>
+              <p class="text-sm text-gray-500 italic">Artist: artist${i + 1}</p>
+              <p class="text-sm text-gray-500 italic">Nursery: Classic Nursery ${i + 1}</p>
+              <p class="text-pink-600 font-bold mt-1">$${300 + i * 5}</p>
+            </div>`).join('')}
         </div>
       </section>
 
